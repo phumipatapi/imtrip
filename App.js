@@ -3,6 +3,8 @@ import { Text, View } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -16,7 +18,7 @@ export default function App() {
         await Font.loadAsync(Entypo.font);
        
        
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        await new Promise(resolve => setTimeout(resolve, 2000));
       } catch (e) {
         console.warn(e);
       } finally {
@@ -26,6 +28,8 @@ export default function App() {
 
     prepare();
   }, []);
+
+  const Tab = createBottomTabNavigator();
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
@@ -37,12 +41,28 @@ export default function App() {
     return null;
   }
 
+  function HomeScreen() {
+    return (
+      <View  style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Home!</Text>
+      </View>
+    );
+  }
+  
+  function SettingsScreen() {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Settings!</Text>
+      </View>
+    );
+  }
+
   return (
-    <View
-      style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-      onLayout={onLayoutRootView}>
-      <Text>SplashScreen Demo! 👋</Text>
-      <Entypo name="rocket" size={30} />
-    </View>
+    <NavigationContainer onReady={onLayoutRootView}>
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Settings" component={SettingsScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
