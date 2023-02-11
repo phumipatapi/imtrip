@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Image, Text, View, TouchableOpacity } from "react-native";
 import Colors from "../../constants/Colors";
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 interface Props {
   viewer: number;
@@ -51,7 +52,6 @@ const ActivityBox = (props: Props) => {
         <View
           style={{
             flexDirection: "row",
-
             paddingHorizontal: 20,
             justifyContent: "space-between",
           }}
@@ -70,7 +70,7 @@ const ActivityBox = (props: Props) => {
               style={{
                 fontFamily: "Mitr_400Regular",
                 color: Colors.light.grey,
-                fontSize: 16,
+                fontSize: RFPercentage(1.5),
               }}
             >
               ผู้เข้าดู
@@ -90,7 +90,7 @@ const ActivityBox = (props: Props) => {
               style={{
                 fontFamily: "Mitr_400Regular",
                 color: Colors.light.grey,
-                fontSize: 16,
+                fontSize: RFPercentage(1.5),
               }}
             >
               ดำเนินการจอง
@@ -110,7 +110,7 @@ const ActivityBox = (props: Props) => {
               style={{
                 fontFamily: "Mitr_400Regular",
                 color: Colors.light.grey,
-                fontSize: 16,
+                fontSize: RFPercentage(1.5),
               }}
             >
               เรทติ้ง
@@ -130,7 +130,7 @@ const ActivityBox = (props: Props) => {
               style={{
                 fontFamily: "Mitr_400Regular",
                 color: Colors.light.grey,
-                fontSize: 16,
+                fontSize: RFPercentage(1.5),
               }}
             >
               จองทั้งหมด

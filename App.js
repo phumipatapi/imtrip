@@ -14,17 +14,18 @@ import { useFonts, Mitr_400Regular, Mitr_600SemiBold } from '@expo-google-fonts/
 import { Kanit_700Bold } from '@expo-google-fonts/kanit';
 import Colors from './constants/Colors';
 import BottomTabNavigator from "./navigation/TabNavigator";
+import { SafeAreaProvider, } from "react-native-safe-area-context";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
-  let [fontsLoaded] = useFonts({
+
+  useFonts({
     Mitr_400Regular,
     Mitr_600SemiBold,
     Kanit_700Bold
   });
-
 
 
   useEffect(() => {
@@ -32,9 +33,6 @@ export default function App() {
       try {
         // Pre-load fonts, make any API calls you need to do here
         await Font.loadAsync(Entypo.font);
-        if (!fontsLoaded) {
-          return null;
-        }
 
         await new Promise(resolve => setTimeout(resolve, 2000));
       } catch (e) {
@@ -47,8 +45,6 @@ export default function App() {
     prepare();
   }, []);
 
-  const Tab = createBottomTabNavigator();
-
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
       await SplashScreen.hideAsync();
@@ -58,8 +54,6 @@ export default function App() {
   if (!appIsReady) {
     return null;
   }
-
-
 
   return (
     <NavigationContainer onReady={onLayoutRootView}>

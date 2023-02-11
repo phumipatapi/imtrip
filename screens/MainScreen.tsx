@@ -1,5 +1,12 @@
 import * as React from "react";
-import { Text, View, TouchableOpacity, Image, Button } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  Platform,
+  StatusBar,
+} from "react-native";
 import Colors from "../constants/Colors";
 import ActivityBox from "../components/MainScreen/ActivityBox";
 
@@ -15,7 +22,12 @@ export default function MainScreen(props: Props) {
         flexDirection: "column",
         backgroundColor: Colors.light.tabBar,
         paddingHorizontal: 30,
-        paddingTop: 40,
+        paddingTop:
+          Platform.OS == "android"
+            ? StatusBar.currentHeight != null
+              ? StatusBar.currentHeight + 20
+              : 30
+            : 10,
       }}
     >
       <View
@@ -40,7 +52,7 @@ export default function MainScreen(props: Props) {
           </Text>
         </View>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => props.navigation.navigate("Setting")}>
           <Image
             source={require("../assets/icon.png")}
             style={{
