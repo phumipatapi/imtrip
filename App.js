@@ -4,17 +4,10 @@ import Entypo from '@expo/vector-icons/Entypo';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MainScreen from './screens/MainScreen'
-import MainMyTripScreen from './screens/MainInsightScreen'
-import MainWishlistScreen from './screens/MainPlanningScreen'
-import MainMessageScreen from './screens/MainMessageScreen'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useFonts, Mitr_400Regular, Mitr_600SemiBold } from '@expo-google-fonts/mitr';
 import { Kanit_700Bold } from '@expo-google-fonts/kanit';
-import Colors from './constants/Colors';
 import BottomTabNavigator from "./navigation/TabNavigator";
-import { SafeAreaProvider, } from "react-native-safe-area-context";
+
 
 SplashScreen.preventAutoHideAsync();
 
@@ -38,6 +31,7 @@ export default function App() {
       } catch (e) {
         console.warn(e);
       } finally {
+
         setAppIsReady(true);
       }
     }

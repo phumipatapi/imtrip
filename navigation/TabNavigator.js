@@ -33,6 +33,7 @@ export default function BottomTabNavigator() {
             iconName = "message-outline";
             circleColor = focused ? "#DAB88B" : "";
           }
+
           return (
             <View
               style={{
@@ -71,6 +72,7 @@ export default function BottomTabNavigator() {
         component={MainStackNavigator}
         options={{ headerShown: false }}
       />
+
       <Tab.Screen
         name="PlanningScreen"
         component={PlanningStackNavigator}

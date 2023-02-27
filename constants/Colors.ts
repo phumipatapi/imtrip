@@ -12,6 +12,7 @@ export default {
     black: "#000000",
     grey: "#C9C9C9",
     button: "#DAB88B",
+    darkGrey: "#9A9A9A",
   },
   dark: {
     text: "#fff",
