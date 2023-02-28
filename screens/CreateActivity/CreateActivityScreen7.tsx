@@ -2,48 +2,44 @@ import React, { useCallback, useEffect, useState, useRef } from "react";
 import {
   Text,
   View,
+  TextInput,
   TouchableWithoutFeedback,
   TouchableOpacity,
   ScrollView,
+  Dimensions,
+  FlatList,
   Image,
+  Alert,
+  Platform,
 } from "react-native";
 import Colors from "../../constants/Colors";
+import DropDownPicker from "react-native-dropdown-picker";
 
-import * as ImagePicker from "expo-image-picker";
-
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { RadioButton } from "react-native-paper";
 
 interface Props {
   navigation: any;
   route: any;
 }
-export default function CreateActivityScreen5(prop: Props) {
-  const [selectedImages, setSelectedImages] = useState<string[]>(
-    Array(6).fill("")
-  );
 
-  const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+interface Place {
+  place_id: string;
+  formatted: string;
+  lat: number;
+  lon: number;
+}
 
-    if (!result.canceled) {
-      const newImage = { uri: result.assets[0].uri };
-      const newSelectedImages = [...selectedImages];
-      const firstEmptyIndex = newSelectedImages.findIndex((uri) => uri === "");
+export default function CreateActivityScreen7(prop: Props) {
+  const [price, setPrice] = useState("");
+  const [checked, setChecked] = useState("");
+  const [people, setPeople] = useState("");
 
-      if (firstEmptyIndex === -1) {
-        console.warn("Cannot add more than 6 images");
-        return;
-      }
-
-      newSelectedImages[firstEmptyIndex] = newImage.uri;
-      setSelectedImages(newSelectedImages);
-    }
+  const handleTextChange = (input: string) => {
+    // Only allow numeric input
+    const numericInput = input.replace(/[^0-9]/g, "");
+    setPrice(numericInput);
   };
+
   return (
     <ScrollView style={{ backgroundColor: Colors.light.background }}>
       <TouchableWithoutFeedback onPress={() => {}}>
@@ -63,7 +59,7 @@ export default function CreateActivityScreen5(prop: Props) {
               color: Colors.light.black,
             }}
           >
-            รูปภาพกิจกรรม
+            ตั้งราคากิจกรรมของคุณ
           </Text>
           <Text
             style={{
@@ -72,8 +68,7 @@ export default function CreateActivityScreen5(prop: Props) {
               color: Colors.light.darkGrey,
             }}
           >
-            ใส่รูปภาพกิจกรรมของคุณเพื่อเพิ่มความน่าสนใจให้กับผู้เข้าร่วมกิจกรรม
-            โดยรูปภาพต้องมีความชัดเจนและแสดงถึงกิจกรรมที่จะจัด
+            กำหนดราคากิจกรรมของคุณเพื่อให้ผู้เข้าร่วมกิจกรรมทราบถึงราคาที่คุณกำหนด
           </Text>
           <View
             style={{
@@ -82,57 +77,42 @@ export default function CreateActivityScreen5(prop: Props) {
               borderBottomWidth: 1,
             }}
           />
+
+          <Text
+            style={{
+              fontFamily: "Mitr_400Regular",
+              fontSize: 20,
+              color: Colors.light.black,
+              marginTop: 20,
+            }}
+          >
+            ราคากิจกรรมคนละ (บาท)
+          </Text>
+          <TextInput
+            style={{
+              borderColor: Colors.light.grey,
+              borderWidth: 1,
+              borderRadius: 10,
+              padding: 15,
+              marginTop: 10,
+              fontFamily: "Mitr_400Regular",
+              fontSize: 18,
+            }}
+            keyboardType="numeric"
+            value={price}
+            onChangeText={handleTextChange}
+            placeholder="ราคาเข้าร่วมกิจกรรมต่อคน"
+          />
           <Text
             style={{
               fontFamily: "Mitr_400Regular",
               fontSize: 18,
               color: Colors.light.darkGrey,
-              marginTop: 20,
+              marginTop: 10,
             }}
           >
-            ใส่รูปภาพอย่างน้อยสามรูป
+            ราคาสามารถแก้ไขได้ภายหลัง
           </Text>
-
-          <View>
-            <View
-              style={{
-                flexDirection: "row",
-                flexWrap: "wrap",
-                justifyContent: "space-between",
-              }}
-            >
-              {[...Array(6)].map((_, index) => {
-                if (selectedImages[index]) {
-                  return (
-                    <Image
-                      key={index}
-                      source={{ uri: selectedImages[index] }}
-                      style={{ width: 100, height: 100, marginTop: 20 }}
-                    />
-                  );
-                } else {
-                  return (
-                    <TouchableOpacity
-                      key={index}
-                      style={{
-                        backgroundColor: Colors.light.grey,
-                        borderRadius: 10,
-                        marginTop: 20,
-                      }}
-                      onPress={pickImage}
-                    >
-                      <MaterialCommunityIcons
-                        name="plus"
-                        size={100}
-                        color={Colors.light.background}
-                      />
-                    </TouchableOpacity>
-                  );
-                }
-              })}
-            </View>
-          </View>
-
           <View
             style={{
               flexDirection: "row",
@@ -165,14 +145,13 @@ export default function CreateActivityScreen5(prop: Props) {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              // disabled={!selectedImages[2]}
+              // disabled={price == "" ? true : false}
               onPress={() => {
-                prop.navigation.push("CreateActivity6");
+                prop.navigation.push("CreateActivity8");
               }}
               style={{
-                backgroundColor: !selectedImages[2]
-                  ? Colors.light.grey
-                  : Colors.light.button,
+                backgroundColor:
+                  price == "" ? Colors.light.grey : Colors.light.button,
                 width: 90,
                 height: 50,
                 alignItems: "center",

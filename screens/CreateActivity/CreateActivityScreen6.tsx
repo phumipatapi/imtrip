@@ -29,19 +29,27 @@ interface Place {
   lon: number;
 }
 
-export default function CreateActivityScreen4(prop: Props) {
+export default function CreateActivityScreen6(prop: Props) {
   const [city, setCity] = useState("");
   const [checked, setChecked] = useState("");
+  const [people, setPeople] = useState("");
+
+  const handleTextChange = (input: string) => {
+    // Only allow numeric input
+    const numericInput = input.replace(/[^0-9]/g, "");
+    setPeople(numericInput);
+  };
+
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
   const [value, setValue] = useState([]);
   const [items, setItems] = useState([
-    { label: "อาหารว่าง", value: "อาหารว่าง" },
-    { label: "อาหารเช้า", value: "อาหารเช้า" },
-    { label: "อาหารเที่ยง", value: "อาหารเที่ยง" },
-    { label: "อาหารเย็น", value: "อาหารเย็น" },
-    { label: "ของหวาน", value: "ของหวาน" },
+    { label: "1", value: "อาหารว่าง" },
+    { label: "2", value: "อาหารเช้า" },
+    { label: "3", value: "อาหารเที่ยง" },
+    { label: "4", value: "อาหารเย็น" },
+    { label: "5", value: "ของหวาน" },
     { label: "น้ำเปล่า", value: "น้ำเปล่า" },
     { label: "อื่น ๆ", value: "อื่น ๆ" },
   ]);
@@ -97,7 +105,7 @@ export default function CreateActivityScreen4(prop: Props) {
               color: Colors.light.black,
             }}
           >
-            สิ่งอำนวยความสะดวก
+            จำนวนผู้เข้าร่วมกิจกรรม
           </Text>
           <Text
             style={{
@@ -106,8 +114,7 @@ export default function CreateActivityScreen4(prop: Props) {
               color: Colors.light.darkGrey,
             }}
           >
-            อธิบายเกี่ยวกับสิ่งอำนวยความสะดวกของทางสถานที่จัดกิจกรรม
-            หรือสิ่งที่คุณจะให้บริการแก่ผู้เข้าร่วมกิจกรรม
+            กำหนดจำนวนผู้เข้าร่วมกิจกรรมของคุณ
           </Text>
           <View
             style={{
@@ -125,108 +132,33 @@ export default function CreateActivityScreen4(prop: Props) {
               marginTop: 20,
             }}
           >
-            อาหารและเครื่องดื่ม (ไม่บังคับ)
+            ผู้เข้าร่วมกิจกรรมสูงสุดต่อกลุ่ม
           </Text>
-
-          <DropDownPicker
-            placeholder="คุณเตรียมอาหารและเครื่องดื่มไว้หรือไม่"
-            placeholderStyle={{ color: Colors.light.grey }}
-            textStyle={{ fontFamily: "Mitr_400Regular", fontSize: 18 }}
-            open={open}
-            value={value}
-            items={items}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setItems}
-            multiple={true}
-            mode="BADGE"
+          <TextInput
             style={{
               borderColor: Colors.light.grey,
-              marginTop: 10,
+              borderWidth: 1,
+              borderRadius: 10,
               padding: 15,
+              marginTop: 10,
+              fontFamily: "Mitr_400Regular",
+              fontSize: 18,
             }}
-            showBadgeDot={false}
-            listMode="SCROLLVIEW"
-            zIndex={3000}
-            zIndexInverse={1000}
-            onPress={() => {
-              setOpen2(false);
-              setOpen3(false);
-            }}
+            keyboardType="numeric"
+            value={people}
+            onChangeText={handleTextChange}
+            placeholder="จำนวนผู้เข้าร่วม"
           />
           <Text
             style={{
               fontFamily: "Mitr_400Regular",
-              fontSize: 20,
-              color: Colors.light.black,
-              marginTop: 20,
+              fontSize: 18,
+              color: Colors.light.darkGrey,
+              marginTop: 10,
             }}
           >
-            การเดินทาง (ไม่บังคับ)
+            จำนวนผู้เข้าร่วมสามารถแก้ไขได้ภายหลัง
           </Text>
-          <DropDownPicker
-            placeholder="คุณมีบริการการเดินทางหรือไม่"
-            placeholderStyle={{ color: Colors.light.grey }}
-            textStyle={{ fontFamily: "Mitr_400Regular", fontSize: 18 }}
-            open={open2}
-            value={travel}
-            items={travelList}
-            setOpen={setOpen2}
-            setValue={setTravel}
-            setItems={settravelList}
-            multiple={true}
-            mode="BADGE"
-            style={{
-              borderColor: Colors.light.grey,
-              marginTop: 10,
-              padding: 15,
-            }}
-            showBadgeDot={false}
-            listMode="SCROLLVIEW"
-            zIndex={2000}
-            zIndexInverse={2000}
-            onPress={() => {
-              setOpen(false);
-              setOpen3(false);
-            }}
-          />
-          <Text
-            style={{
-              fontFamily: "Mitr_400Regular",
-              fontSize: 20,
-              color: Colors.light.black,
-              marginTop: 20,
-            }}
-          >
-            อื่น ๆ (ไม่บังคับ)
-          </Text>
-          <DropDownPicker
-            placeholder="อื่น ๆ"
-            placeholderStyle={{ color: Colors.light.grey }}
-            textStyle={{ fontFamily: "Mitr_400Regular", fontSize: 18 }}
-            zIndex={1000}
-            zIndexInverse={3000}
-            open={open3}
-            value={etc}
-            items={etcList}
-            setOpen={setOpen3}
-            setValue={setEtc}
-            setItems={setEtcList}
-            multiple={true}
-            mode="BADGE"
-            style={{
-              borderColor: Colors.light.grey,
-              marginTop: 10,
-              padding: 15,
-            }}
-            showBadgeDot={false}
-            listMode="SCROLLVIEW"
-            onPress={() => {
-              setOpen2(false);
-              setOpen(false);
-            }}
-          />
-
           <View
             style={{
               flexDirection: "row",
@@ -259,12 +191,13 @@ export default function CreateActivityScreen4(prop: Props) {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              // disabled={city === "" || value.length === 0 || checked === ""}
+              // disabled={people == "" ? true : false}
               onPress={() => {
-                prop.navigation.push("CreateActivity5");
+                prop.navigation.push("CreateActivity7");
               }}
               style={{
-                backgroundColor: Colors.light.button,
+                backgroundColor:
+                  people == "" ? Colors.light.grey : Colors.light.button,
                 width: 90,
                 height: 50,
                 alignItems: "center",

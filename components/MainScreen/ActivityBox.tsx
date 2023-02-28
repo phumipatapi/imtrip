@@ -1,5 +1,11 @@
 import * as React from "react";
-import { Image, Text, View, TouchableOpacity } from "react-native";
+import {
+  Image,
+  Text,
+  View,
+  TouchableOpacity,
+  ImageBackground,
+} from "react-native";
 import Colors from "../../constants/Colors";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
@@ -8,6 +14,8 @@ interface Props {
   booking: number;
   rating: number;
   allbooking: number;
+  activityName: string;
+  onPress: () => void;
 }
 
 const ActivityBox = (props: Props) => {
@@ -28,6 +36,7 @@ const ActivityBox = (props: Props) => {
         backgroundColor: Colors.light.black,
         borderRadius: 20,
       }}
+      onPress={props.onPress}
     >
       <Image
         source={require("../../assets/activityImg1.jpeg")}
@@ -36,9 +45,29 @@ const ActivityBox = (props: Props) => {
           height: "70%",
           borderTopLeftRadius: 15,
           borderTopRightRadius: 15,
-          opacity: 0.7,
+          opacity: 0.5,
         }}
       />
+      <View
+        style={{
+          position: "absolute",
+          top: 40,
+          left: 20,
+          right: 0,
+          bottom: 0,
+          justifyContent: "center",
+        }}
+      >
+        <Text
+          style={{
+            fontFamily: "Mitr_400Regular",
+            color: Colors.light.background,
+            fontSize: 20,
+          }}
+        >
+          {props.activityName}
+        </Text>
+      </View>
 
       <View
         style={{

@@ -156,7 +156,7 @@ export default function CreateActivityScreen(prop: Props) {
             <TouchableOpacity
               // disabled={city === "" || value.length === 0 || checked === ""}
               onPress={() => {
-                prop.navigation.navigate("CreateActivity2");
+                prop.navigation.push("CreateActivity2");
               }}
               style={{
                 backgroundColor:

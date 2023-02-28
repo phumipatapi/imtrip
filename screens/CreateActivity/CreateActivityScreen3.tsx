@@ -64,9 +64,25 @@ export default function CreateActivityScreen3(prop: Props) {
     }
   };
 
+  const searchLatLon = async (lat: number, lon: number) => {
+    const url = `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lon}&apiKey=2dee697077eb495d90681ad091352550`;
+
+    try {
+      const response = await axios.get(url);
+
+      const data = response.data;
+
+      setTimeout(() => {
+        setAddress(data.features[0].properties.formatted);
+      }, 0);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const onRegionChangeComplete = (newRegion: Region) => {
     setLocation(newRegion);
-    console.log(newRegion); // logs the new region of the center of the map
+    searchLatLon(newRegion.latitude, newRegion.longitude);
   };
 
   useEffect(() => {
@@ -185,34 +201,46 @@ export default function CreateActivityScreen3(prop: Props) {
               }}
               onSubmitEditing={() => searchPlace(query)}
             />
-            {/* <FlatList
-              scrollEnabled={false}
-              data={result}
-              keyExtractor={(item) => item.place_id}
-              renderItem={renderItem}
-            /> */}
-            {results.map((result, index) => (
-              <TouchableOpacity
-                key={index}
-                style={{
-                  backgroundColor: Colors.light.background,
-                  padding: 5,
-                  marginHorizontal: 20,
-                }}
-                onPress={() => {
-                  setAddress(result.formatted);
-                  setLocation({
-                    latitude: result.location.lat,
-                    longitude: result.location.lon,
-                    latitudeDelta: 0.01,
-                    longitudeDelta: 0.02,
-                  });
-                  setResults([]);
-                }}
-              >
-                <Text>{result.formatted}</Text>
-              </TouchableOpacity>
-            ))}
+            <View
+              style={{
+                borderRadius: 10,
+                backgroundColor: Colors.light.background,
+
+                marginHorizontal: 20,
+                marginTop: 5,
+              }}
+            >
+              {results.map((result, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={{
+                    padding: 10,
+                    borderBottomWidth: index != results.length - 1 ? 0.5 : 0,
+                    borderColor: Colors.light.grey,
+                  }}
+                  onPress={() => {
+                    setAddress(result.formatted);
+                    setLocation({
+                      latitude: result.location.lat,
+                      longitude: result.location.lon,
+                      latitudeDelta: 0.01,
+                      longitudeDelta: 0.02,
+                    });
+                    setResults([]);
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontFamily: "Mitr_400Regular",
+                      fontSize: 18,
+                      color: Colors.light.black,
+                    }}
+                  >
+                    {result.formatted}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
         </View>
         <View
@@ -321,7 +349,7 @@ export default function CreateActivityScreen3(prop: Props) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              prop.navigation.navigate("CreateActivity4");
+              prop.navigation.push("CreateActivity4");
             }}
             style={{
               backgroundColor: Colors.light.button,

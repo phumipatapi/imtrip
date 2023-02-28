@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import { Text, View, Image, TouchableOpacity, Linking } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Colors from "../constants/Colors";
 
@@ -142,6 +142,7 @@ export default function SettingScreen(prop: Props) {
           flexDirection: "row",
           alignItems: "center",
         }}
+        onPress={() => prop.navigation.navigate("TermCondition")}
       >
         <MaterialCommunityIcons
           name="file-document-outline"
@@ -156,7 +157,7 @@ export default function SettingScreen(prop: Props) {
             marginLeft: 10,
           }}
         >
-          ข้อกำหนดและเงื่อนไข
+          ข้อตกลงและเงื่อนไข
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -165,6 +166,7 @@ export default function SettingScreen(prop: Props) {
           flexDirection: "row",
           alignItems: "center",
         }}
+        onPress={() => Linking.openURL("mailto:imtripth@gmail.com")}
       >
         <MaterialCommunityIcons
           name="help-circle-outline"

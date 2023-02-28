@@ -66,10 +66,12 @@ export default function MainScreen(props: Props) {
       </View>
 
       <ActivityBox
+        activityName="มาสานตะกร้ากันเถอะ"
         viewer={0}
         booking={0}
         rating={0}
         allbooking={0}
+        onPress={() => props.navigation.push("ActivityInfo")}
       ></ActivityBox>
       <View>
         <TouchableOpacity
@@ -89,7 +91,7 @@ export default function MainScreen(props: Props) {
             shadowOpacity: 0.22,
             shadowRadius: 2.22,
           }}
-          onPress={() => props.navigation.navigate("CreateActivity")}
+          onPress={() => props.navigation.push("CreateActivity")}
         >
           <Text
             style={{

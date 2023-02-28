@@ -7,19 +7,25 @@ import MainMessageScreen from "../screens/MainMessageScreen";
 import CreateActivityScreen from "../screens/CreateActivity/CreateActivityScreen";
 import CreateActivityScreen2 from "../screens/CreateActivity/CreateActivityScreen2";
 import SettingScreen from "../screens/SettingScreen";
-import { Button, TouchableOpacity } from "react-native";
+import { Button, TouchableOpacity, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Colors from "../constants/Colors";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import CreateActivityScreen3 from "../screens/CreateActivity/CreateActivityScreen3";
 import CreateActivityScreen4 from "../screens/CreateActivity/CreateActivityScreen4";
 import CreateActivityScreen5 from "../screens/CreateActivity/CreateActivityScreen5";
+import CreateActivityScreen6 from "../screens/CreateActivity/CreateActivityScreen6";
+import CreateActivityScreen7 from "../screens/CreateActivity/CreateActivityScreen7";
+import CreateActivityScreen8 from "../screens/CreateActivity/CreateActivityScreen8";
+import TermAndConditionScreen from "../screens/TermAndCondition";
+import ActivityInfoScreen from "../screens/ActivityInfo/ActivityInfoScreen";
+import BookingDetailScreen from "../screens/BookingDetail/BookingDetailScreen";
 
 const Stack = createStackNavigator();
 
 const MainStackNavigator = ({ navigation, route }) => {
   React.useLayoutEffect(() => {
-    const tabHiddenRoutes = ["CreateActivity", "CreateActivity2", "CreateActivity3", "CreateActivity4", "CreateActivity5"];
+    const tabHiddenRoutes = ["CreateActivity", "CreateActivity2", "CreateActivity3", "CreateActivity4", "CreateActivity5", "CreateActivity6", "CreateActivity7", "CreateActivity8", "TermAndCondition", "ActivityInfo", "BookingDetail"];
     const routeName = getFocusedRouteNameFromRoute(route);
     if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
       navigation.setOptions({ tabBarStyle: { display: 'none' } });
@@ -45,7 +51,7 @@ const MainStackNavigator = ({ navigation, route }) => {
           headerLeft: (props) => {
             return (
               <TouchableOpacity
-                onPress={() => navigation.goBack()}
+                onPress={() => navigation.navigate("Home")}
                 style={{
                   paddingLeft: 10,
                 }}
@@ -84,6 +90,7 @@ const MainStackNavigator = ({ navigation, route }) => {
               </TouchableOpacity>
             );
           },
+
         })}
       />
       <Stack.Screen
@@ -97,7 +104,7 @@ const MainStackNavigator = ({ navigation, route }) => {
           headerLeft: (props) => {
             return (
               <TouchableOpacity
-                onPress={() => navigation.goBack()}
+                onPress={() => navigation.navigate("Home")}
                 style={{
                   paddingLeft: 10,
                 }}
@@ -123,7 +130,7 @@ const MainStackNavigator = ({ navigation, route }) => {
           headerLeft: (props) => {
             return (
               <TouchableOpacity
-                onPress={() => navigation.goBack()}
+                onPress={() => navigation.navigate("Home")}
                 style={{
                   paddingLeft: 10,
                 }}
@@ -149,6 +156,188 @@ const MainStackNavigator = ({ navigation, route }) => {
           headerLeft: (props) => {
             return (
               <TouchableOpacity
+                onPress={() => navigation.navigate("Home")}
+                style={{
+                  paddingLeft: 10,
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="chevron-left"
+                  size={40}
+                  color={Colors.light.grey}
+                />
+              </TouchableOpacity>
+            );
+          },
+        })}
+      />
+      <Stack.Screen
+        name="CreateActivity6"
+        component={CreateActivityScreen6}
+        options={({ navigation, route }) => ({
+
+          title: "",
+          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
+
+          headerLeft: (props) => {
+            return (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Home")}
+                style={{
+                  paddingLeft: 10,
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="chevron-left"
+                  size={40}
+                  color={Colors.light.grey}
+                />
+              </TouchableOpacity>
+            );
+          },
+        })}
+      />
+      <Stack.Screen
+        name="CreateActivity7"
+        component={CreateActivityScreen7}
+        options={({ navigation, route }) => ({
+
+          title: "",
+          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
+
+          headerLeft: (props) => {
+            return (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Home")}
+                style={{
+                  paddingLeft: 10,
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="chevron-left"
+                  size={40}
+                  color={Colors.light.grey}
+                />
+              </TouchableOpacity>
+            );
+          },
+        })}
+      />
+      <Stack.Screen
+        name="CreateActivity8"
+        component={CreateActivityScreen8}
+        options={({ navigation, route }) => ({
+
+          title: "",
+          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
+
+          headerLeft: (props) => {
+            return (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Home")}
+                style={{
+                  paddingLeft: 10,
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="chevron-left"
+                  size={40}
+                  color={Colors.light.grey}
+                />
+              </TouchableOpacity>
+            );
+          },
+        })}
+      />
+      <Stack.Screen
+        name="ActivityInfo"
+        component={ActivityInfoScreen}
+        options={({ navigation, route }) => ({
+          // headerStyle: { paddingBottom: 20 },
+          title: "",
+          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
+          headerLeft: (props) => {
+            return (
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={{
+                  paddingLeft: 10,
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="chevron-left"
+                  size={40}
+                  color={Colors.light.grey}
+                />
+              </TouchableOpacity>
+            );
+          },
+          headerRight: (props) => {
+            return <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={{
+                  paddingRight: 15,
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="eye"
+                  size={30}
+                  color={Colors.light.grey}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={{
+                  paddingRight: 20,
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="square-edit-outline"
+                  size={30}
+                  color={Colors.light.grey}
+                />
+              </TouchableOpacity>
+            </View>
+          }
+        })}
+      />
+      <Stack.Screen
+        name="BookingDetail"
+        component={BookingDetailScreen}
+        options={({ navigation, route }) => ({
+          // headerStyle: { paddingBottom: 20 },
+          title: "",
+          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
+          headerLeft: (props) => {
+            return (
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={{
+                  paddingLeft: 10,
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="chevron-left"
+                  size={40}
+                  color={Colors.light.grey}
+                />
+              </TouchableOpacity>
+            );
+          },
+
+        })}
+      />
+      <Stack.Screen
+        name="Setting"
+        component={SettingScreen}
+        options={({ navigation, route }) => ({
+          // headerStyle: { paddingBottom: 20 },
+          title: "บัญชีของฉัน",
+          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
+          headerLeft: (props) => {
+            return (
+              <TouchableOpacity
                 onPress={() => navigation.goBack()}
                 style={{
                   paddingLeft: 10,
@@ -165,11 +354,11 @@ const MainStackNavigator = ({ navigation, route }) => {
         })}
       />
       <Stack.Screen
-        name="Setting"
-        component={SettingScreen}
+        name="TermCondition"
+        component={TermAndConditionScreen}
         options={({ navigation, route }) => ({
           // headerStyle: { paddingBottom: 20 },
-          title: "บัญชีของฉัน",
+          title: "Term and Condition",
           headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
           headerLeft: (props) => {
             return (

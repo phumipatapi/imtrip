@@ -18,7 +18,7 @@ interface Props {
 
 export default function CreateActivityScreen2(prop: Props) {
   const [activityDetail, setDetail] = useState("");
-  const [checked, setChecked] = useState("first");
+  const [activityName, setName] = useState("");
   const [open, setOpen] = useState(false);
   const [time, setTime] = useState("");
   const [items, setItems] = useState([
@@ -102,7 +102,7 @@ export default function CreateActivityScreen2(prop: Props) {
               fontSize: 18,
               paddingBottom: 40,
             }}
-            onChangeText={setDetail}
+            onChangeText={setName}
             value={activityDetail}
             placeholder="ตั้งชื่อกิจกรรมของคุณ"
           />
@@ -194,7 +194,7 @@ export default function CreateActivityScreen2(prop: Props) {
             <TouchableOpacity
               // disabled={activityDetail == "" || time == ""}
               onPress={() => {
-                prop.navigation.navigate("CreateActivity3");
+                prop.navigation.push("CreateActivity3");
               }}
               style={{
                 backgroundColor:
