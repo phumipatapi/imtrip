@@ -12,6 +12,7 @@ import Colors from "../../constants/Colors";
 import * as ImagePicker from "expo-image-picker";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { activity } from "../model/createActivity";
 
 interface Props {
   navigation: any;
@@ -19,7 +20,7 @@ interface Props {
 }
 export default function CreateActivityScreen5(prop: Props) {
   const [selectedImages, setSelectedImages] = useState<string[]>(
-    Array(6).fill("")
+    activity[0].activityImage
   );
 
   const pickImage = async () => {
@@ -41,12 +42,13 @@ export default function CreateActivityScreen5(prop: Props) {
       }
 
       newSelectedImages[firstEmptyIndex] = newImage.uri;
+      console.log(newSelectedImages);
       setSelectedImages(newSelectedImages);
     }
   };
   return (
     <ScrollView style={{ backgroundColor: Colors.light.background }}>
-      <TouchableWithoutFeedback onPress={() => {}}>
+      <TouchableWithoutFeedback onPress={() => { }}>
         <View
           style={{
             flex: 1,
@@ -152,7 +154,10 @@ export default function CreateActivityScreen5(prop: Props) {
                 justifyContent: "center",
                 borderRadius: 10,
               }}
-              onPress={() => prop.navigation.goBack()}
+              onPress={() => {
+                activity[0].activityImage = selectedImages;
+                prop.navigation.goBack()
+              }}
             >
               <Text
                 style={{
@@ -165,8 +170,9 @@ export default function CreateActivityScreen5(prop: Props) {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              // disabled={!selectedImages[2]}
+              disabled={!selectedImages[2]}
               onPress={() => {
+                activity[0].activityImage = selectedImages;
                 prop.navigation.push("CreateActivity6");
               }}
               style={{

@@ -18,8 +18,8 @@ export default function MainPlanningScreen() {
       <LottieWithText
         animatedSource={require("../assets/animatedIcon/calendar.json")}
         lottieWidth={"80%"}
-        title={"คุณยังไม่ได้สร้างกิจกรรม"}
-        subTitle={"ลองสร้างกิจกรรมใหม่ เพื่อจัดการกิจกรรมของคุณ"}
+        title={"ยังไม่มีการจองเข้ามา"}
+        subTitle={""}
       />
     </View>
   );

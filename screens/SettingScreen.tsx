@@ -1,14 +1,54 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as React from "react";
 import { Text, View, Image, TouchableOpacity, Linking } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Colors from "../constants/Colors";
-
+import { useNavigation } from '@react-navigation/native';
 interface Props {
   navigation: any;
   route: any;
 }
 
 export default function SettingScreen(prop: Props) {
+
+
+  const [userName, setUserName] = React.useState<string>("");
+  const [userImage, setUserImage] = React.useState<string>("");
+  const getProfile = async () => {
+    try {
+      const name = await AsyncStorage.getItem('userName');
+      const image = await AsyncStorage.getItem('userImage');
+      if (name !== null && image !== null) {
+        setUserName(name);
+        setUserImage(image);
+      }
+    } catch (error) {
+      console.log('Error getting access token:', error);
+    }
+  };
+  // const handlePress = () => {
+  //   prop.navigation.navigate('SignIn');
+  // };
+
+  const logOut = async () => {
+
+
+    try {
+      await AsyncStorage.removeItem('accessToken');
+      await AsyncStorage.removeItem('userName');
+      await AsyncStorage.removeItem('userImage');
+      await AsyncStorage.removeItem('userEmail');
+
+
+
+    } catch (error) {
+      console.log('Error getting access token:', error);
+    }
+  }
+
+  React.useEffect(() => {
+    getProfile()
+  })
   return (
     <View
       style={{
@@ -25,15 +65,23 @@ export default function SettingScreen(prop: Props) {
           alignItems: "center",
         }}
       >
-        <Image
+        {userImage == "" ? <Image
           source={require("../assets/icon.png")}
           style={{
-            height: 100,
-            width: 100,
+            height: 52,
+            width: 52,
             resizeMode: "cover",
-            borderRadius: 50,
+            borderRadius: 26,
           }}
-        />
+        /> : <Image
+          source={{ uri: userImage }}
+          style={{
+            height: 52,
+            width: 52,
+            resizeMode: "cover",
+            borderRadius: 26,
+          }}
+        />}
         <View
           style={{
             flex: 1,
@@ -48,7 +96,7 @@ export default function SettingScreen(prop: Props) {
               color: Colors.light.black,
             }}
           >
-            Phumipat Apivansri
+            {userName}
           </Text>
           <Text
             style={{
@@ -213,6 +261,7 @@ export default function SettingScreen(prop: Props) {
           flexDirection: "row",
           alignItems: "center",
         }}
+        onPress={() => logOut()}
       >
         <MaterialCommunityIcons name="logout" size={24} color={"red"} />
         <Text

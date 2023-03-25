@@ -20,12 +20,37 @@ import CreateActivityScreen8 from "../screens/CreateActivity/CreateActivityScree
 import TermAndConditionScreen from "../screens/TermAndCondition";
 import ActivityInfoScreen from "../screens/ActivityInfo/ActivityInfoScreen";
 import BookingDetailScreen from "../screens/BookingDetail/BookingDetailScreen";
+import { activity } from "../screens/model/createActivity";
+import SignInScreen from "../screens/auth/SignInScreen";
 
 const Stack = createStackNavigator();
 
-const MainStackNavigator = ({ navigation, route }) => {
+const AuthStackNavigator = ({ navigation, route }) => {
   React.useLayoutEffect(() => {
-    const tabHiddenRoutes = ["CreateActivity", "CreateActivity2", "CreateActivity3", "CreateActivity4", "CreateActivity5", "CreateActivity6", "CreateActivity7", "CreateActivity8", "TermAndCondition", "ActivityInfo", "BookingDetail"];
+    const tabHiddenRoutes = ["SignIn"];
+    const routeName = getFocusedRouteNameFromRoute(route);
+  })
+  if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
+    navigation.setOptions({ tabBarStyle: { display: 'none' } });
+  } else {
+    navigation.setOptions({ tabBarStyle: { display: 'flex', height: 65, } });
+  }
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="SignIn"
+        component={SignInScreen}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+
+const MainStackNavigator = ({ navigation, route }) => {
+
+  React.useLayoutEffect(() => {
+    const tabHiddenRoutes = ["CreateActivity", "CreateActivity2", "CreateActivity3", "CreateActivity4", "CreateActivity5", "CreateActivity6", "CreateActivity7", "CreateActivity8", "TermAndCondition", "ActivityInfo", "BookingDetail", "SignIn"];
     const routeName = getFocusedRouteNameFromRoute(route);
     if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
       navigation.setOptions({ tabBarStyle: { display: 'none' } });
@@ -33,8 +58,26 @@ const MainStackNavigator = ({ navigation, route }) => {
       navigation.setOptions({ tabBarStyle: { display: 'flex', height: 65, } });
     }
   }, [navigation, route]);
+
+  function clearDraftData() {
+    activity[0].district = "";
+    activity[0].activityType = [];
+    activity[0].useToActivity = "";
+    activity[0].activityName = "";
+    activity[0].time = 0;
+    activity[0].activityDetail = "";
+    activity[0].address = "";
+    activity[0].latitude = 0;
+    activity[0].longitude = 0;
+    activity[0].activityImage = [];
+    activity[0].limit = 0;
+    activity[0].price = 0;
+    activity[0].addressDetail = "";
+  }
+
   return (
     <Stack.Navigator>
+
       <Stack.Screen
         name="Home"
         component={MainScreen}
@@ -51,7 +94,10 @@ const MainStackNavigator = ({ navigation, route }) => {
           headerLeft: (props) => {
             return (
               <TouchableOpacity
-                onPress={() => navigation.navigate("Home")}
+                onPress={() => {
+                  clearDraftData(),
+                    navigation.navigate("Home")
+                }}
                 style={{
                   paddingLeft: 10,
                 }}
@@ -77,7 +123,10 @@ const MainStackNavigator = ({ navigation, route }) => {
           headerLeft: (props) => {
             return (
               <TouchableOpacity
-                onPress={() => navigation.goBack()}
+                onPress={() => {
+                  clearDraftData(),
+                    navigation.navigate("Home")
+                }}
                 style={{
                   paddingLeft: 10,
                 }}
@@ -104,7 +153,10 @@ const MainStackNavigator = ({ navigation, route }) => {
           headerLeft: (props) => {
             return (
               <TouchableOpacity
-                onPress={() => navigation.navigate("Home")}
+                onPress={() => {
+                  clearDraftData(),
+                    navigation.navigate("Home")
+                }}
                 style={{
                   paddingLeft: 10,
                 }}
@@ -130,7 +182,10 @@ const MainStackNavigator = ({ navigation, route }) => {
           headerLeft: (props) => {
             return (
               <TouchableOpacity
-                onPress={() => navigation.navigate("Home")}
+                onPress={() => {
+                  clearDraftData(),
+                    navigation.navigate("Home")
+                }}
                 style={{
                   paddingLeft: 10,
                 }}
@@ -156,7 +211,10 @@ const MainStackNavigator = ({ navigation, route }) => {
           headerLeft: (props) => {
             return (
               <TouchableOpacity
-                onPress={() => navigation.navigate("Home")}
+                onPress={() => {
+                  clearDraftData(),
+                    navigation.navigate("Home")
+                }}
                 style={{
                   paddingLeft: 10,
                 }}
@@ -182,7 +240,10 @@ const MainStackNavigator = ({ navigation, route }) => {
           headerLeft: (props) => {
             return (
               <TouchableOpacity
-                onPress={() => navigation.navigate("Home")}
+                onPress={() => {
+                  clearDraftData(),
+                    navigation.navigate("Home")
+                }}
                 style={{
                   paddingLeft: 10,
                 }}
@@ -208,7 +269,10 @@ const MainStackNavigator = ({ navigation, route }) => {
           headerLeft: (props) => {
             return (
               <TouchableOpacity
-                onPress={() => navigation.navigate("Home")}
+                onPress={() => {
+                  clearDraftData(),
+                    navigation.navigate("Home")
+                }}
                 style={{
                   paddingLeft: 10,
                 }}
@@ -234,7 +298,10 @@ const MainStackNavigator = ({ navigation, route }) => {
           headerLeft: (props) => {
             return (
               <TouchableOpacity
-                onPress={() => navigation.navigate("Home")}
+                onPress={() => {
+                  clearDraftData(),
+                    navigation.navigate("Home")
+                }}
                 style={{
                   paddingLeft: 10,
                 }}
@@ -423,6 +490,7 @@ const MessageStackNavigator = () => {
 };
 
 export {
+  AuthStackNavigator,
   MainStackNavigator,
   PlanningStackNavigator,
   InsightStackNavigator,

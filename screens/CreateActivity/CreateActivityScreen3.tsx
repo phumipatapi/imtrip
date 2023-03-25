@@ -12,12 +12,12 @@ import {
   Alert,
 } from "react-native";
 import Colors from "../../constants/Colors";
-import DropDownPicker from "react-native-dropdown-picker";
 import MapView, { LatLng, Marker, Region } from "react-native-maps";
 import * as Location from "expo-location";
 import axios, { AxiosResponse } from "axios";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Lottie from "lottie-react-native";
+import { activity } from "../model/createActivity";
 
 interface Props {
   navigation: any;
@@ -33,13 +33,13 @@ interface Place {
 
 export default function CreateActivityScreen3(prop: Props) {
   const [location, setLocation] = useState({
-    latitude: 13.736717,
-    longitude: 100.523186,
+    latitude: activity[0].latitude,
+    longitude: activity[0].longitude,
     latitudeDelta: 0.05,
     longitudeDelta: 0.06,
   });
-  const [address, setAddress] = useState("");
-  const [addressDetail, setAddressDetail] = useState("");
+  const [address, setAddress] = useState(activity[0].address);
+  const [addressDetail, setAddressDetail] = useState(activity[0].addressDetail);
   const [query, setQuery] = useState("" + "_thailand");
   const [results, setResults] = useState<
     { formatted: string; location: { lat: number; lon: number } }[]
@@ -326,6 +326,7 @@ export default function CreateActivityScreen3(prop: Props) {
           }}
         >
           <TouchableOpacity
+
             style={{
               borderColor: Colors.light.button,
               borderWidth: 1,
@@ -335,7 +336,13 @@ export default function CreateActivityScreen3(prop: Props) {
               justifyContent: "center",
               borderRadius: 10,
             }}
-            onPress={() => prop.navigation.goBack()}
+            onPress={() => {
+              activity[0].address = address;
+              activity[0].addressDetail = addressDetail;
+              activity[0].latitude = location.latitude;
+              activity[0].longitude = location.longitude;
+              prop.navigation.goBack()
+            }}
           >
             <Text
               style={{
@@ -348,7 +355,12 @@ export default function CreateActivityScreen3(prop: Props) {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
+            disabled={address == "" ? true : false}
             onPress={() => {
+              activity[0].address = address;
+              activity[0].addressDetail = addressDetail;
+              activity[0].latitude = location.latitude;
+              activity[0].longitude = location.longitude;
               prop.navigation.push("CreateActivity4");
             }}
             style={{

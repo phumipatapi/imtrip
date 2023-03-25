@@ -13,9 +13,7 @@ import {
   Platform,
 } from "react-native";
 import Colors from "../../constants/Colors";
-import DropDownPicker from "react-native-dropdown-picker";
-
-import { RadioButton } from "react-native-paper";
+import { activity } from "../model/createActivity";
 
 interface Props {
   navigation: any;
@@ -30,9 +28,7 @@ interface Place {
 }
 
 export default function CreateActivityScreen6(prop: Props) {
-  const [city, setCity] = useState("");
-  const [checked, setChecked] = useState("");
-  const [people, setPeople] = useState("");
+  const [people, setPeople] = useState(activity[0].limit.toString());
 
   const handleTextChange = (input: string) => {
     // Only allow numeric input
@@ -40,53 +36,11 @@ export default function CreateActivityScreen6(prop: Props) {
     setPeople(numericInput);
   };
 
-  const [open, setOpen] = useState(false);
-  const [open2, setOpen2] = useState(false);
-  const [open3, setOpen3] = useState(false);
-  const [value, setValue] = useState([]);
-  const [items, setItems] = useState([
-    { label: "1", value: "อาหารว่าง" },
-    { label: "2", value: "อาหารเช้า" },
-    { label: "3", value: "อาหารเที่ยง" },
-    { label: "4", value: "อาหารเย็น" },
-    { label: "5", value: "ของหวาน" },
-    { label: "น้ำเปล่า", value: "น้ำเปล่า" },
-    { label: "อื่น ๆ", value: "อื่น ๆ" },
-  ]);
-  const [travel, setTravel] = useState([]);
-  const [travelList, settravelList] = useState([
-    {
-      label: "มีรถบริการรับส่งถึงตัวเมือง",
-      value: "มีรถบริการรับส่งถึงตัวเมือง",
-    },
-    {
-      label: "มีรถบริการรับส่งในบริเวณใกล้เคียง",
-      value: "มีรถบริการรับส่งในบริเวณใกล้เคียง",
-    },
-    { label: "รถไฟ", value: "รถไฟ" },
-    { label: "รถทัวร์", value: "รถทัวร์" },
-    { label: "รถตู้", value: "รถตู้" },
-    { label: "อื่น ๆ", value: "อื่น ๆ" },
-  ]);
-  const [etc, setEtc] = useState([]);
-  const [etcList, setEtcList] = useState([
-    { label: "ที่จอดรถ", value: "ที่จอดรถ" },
-    { label: "ห้องน้ำ", value: "ห้องน้ำ" },
-    {
-      label: "สิ่งอำนวยความสะดวกแก่ผู้พิการ",
-      value: "สิ่งอำนวยความสะดวกแก่ผู้พิการ",
-    },
-    { label: "อินเทอร์เน็ต", value: "อินเทอร์เน็ต" },
-    { label: "ที่พัก", value: "ที่พัก" },
-  ]);
-
   return (
     <ScrollView style={{ backgroundColor: Colors.light.background }}>
       <TouchableWithoutFeedback
         onPress={() => {
-          setOpen(false);
-          setOpen2(false);
-          setOpen3(false);
+
         }}
       >
         <View
@@ -178,7 +132,10 @@ export default function CreateActivityScreen6(prop: Props) {
                 justifyContent: "center",
                 borderRadius: 10,
               }}
-              onPress={() => prop.navigation.goBack()}
+              onPress={() => {
+                activity[0].limit = parseInt(people);
+                prop.navigation.goBack()
+              }}
             >
               <Text
                 style={{
@@ -191,8 +148,9 @@ export default function CreateActivityScreen6(prop: Props) {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              // disabled={people == "" ? true : false}
+              disabled={people == "" ? true : false}
               onPress={() => {
+                activity[0].limit = parseInt(people);
                 prop.navigation.push("CreateActivity7");
               }}
               style={{

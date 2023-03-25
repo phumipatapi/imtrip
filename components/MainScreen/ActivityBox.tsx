@@ -9,16 +9,18 @@ import {
 import Colors from "../../constants/Colors";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
-interface Props {
+export interface ActivityBoxProps {
+
   viewer: number;
   booking: number;
   rating: number;
   allbooking: number;
   activityName: string;
+  activityImage: string[];
   onPress: () => void;
 }
 
-const ActivityBox = (props: Props) => {
+const ActivityBox = (props: ActivityBoxProps) => {
   return (
     <TouchableOpacity
       style={{

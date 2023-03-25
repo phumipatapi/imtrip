@@ -14,28 +14,19 @@ import {
 } from "react-native";
 import Colors from "../../constants/Colors";
 import DropDownPicker from "react-native-dropdown-picker";
-
-import { RadioButton } from "react-native-paper";
+import { activity } from "../model/createActivity";
 
 interface Props {
   navigation: any;
   route: any;
 }
 
-interface Place {
-  place_id: string;
-  formatted: string;
-  lat: number;
-  lon: number;
-}
-
 export default function CreateActivityScreen4(prop: Props) {
-  const [city, setCity] = useState("");
-  const [checked, setChecked] = useState("");
+
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
-  const [value, setValue] = useState([]);
+  const [value, setValue] = useState(activity[0].facilityFood);
   const [items, setItems] = useState([
     { label: "อาหารว่าง", value: "อาหารว่าง" },
     { label: "อาหารเช้า", value: "อาหารเช้า" },
@@ -45,7 +36,7 @@ export default function CreateActivityScreen4(prop: Props) {
     { label: "น้ำเปล่า", value: "น้ำเปล่า" },
     { label: "อื่น ๆ", value: "อื่น ๆ" },
   ]);
-  const [travel, setTravel] = useState([]);
+  const [travel, setTravel] = useState(activity[0].facilityTravel);
   const [travelList, settravelList] = useState([
     {
       label: "มีรถบริการรับส่งถึงตัวเมือง",
@@ -60,7 +51,7 @@ export default function CreateActivityScreen4(prop: Props) {
     { label: "รถตู้", value: "รถตู้" },
     { label: "อื่น ๆ", value: "อื่น ๆ" },
   ]);
-  const [etc, setEtc] = useState([]);
+  const [etc, setEtc] = useState(activity[0].facilityOther);
   const [etcList, setEtcList] = useState([
     { label: "ที่จอดรถ", value: "ที่จอดรถ" },
     { label: "ห้องน้ำ", value: "ห้องน้ำ" },
@@ -246,7 +237,12 @@ export default function CreateActivityScreen4(prop: Props) {
                 justifyContent: "center",
                 borderRadius: 10,
               }}
-              onPress={() => prop.navigation.goBack()}
+              onPress={() => {
+                activity[0].facilityFood = value;
+                activity[0].facilityTravel = travel;
+                activity[0].facilityOther = etc;
+                prop.navigation.goBack()
+              }}
             >
               <Text
                 style={{
@@ -259,11 +255,15 @@ export default function CreateActivityScreen4(prop: Props) {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              // disabled={city === "" || value.length === 0 || checked === ""}
+              disabled={value.length == 0 && travel.length == 0 && etc.length == 0}
               onPress={() => {
+                activity[0].facilityFood = value;
+                activity[0].facilityTravel = travel;
+                activity[0].facilityOther = etc;
                 prop.navigation.push("CreateActivity5");
               }}
               style={{
+
                 backgroundColor: Colors.light.button,
                 width: 90,
                 height: 50,

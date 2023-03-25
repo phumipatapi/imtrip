@@ -16,6 +16,7 @@ import Colors from "../../constants/Colors";
 import DropDownPicker from "react-native-dropdown-picker";
 
 import { RadioButton } from "react-native-paper";
+import { activity } from "../model/createActivity";
 
 interface Props {
   navigation: any;
@@ -30,9 +31,7 @@ interface Place {
 }
 
 export default function CreateActivityScreen7(prop: Props) {
-  const [price, setPrice] = useState("");
-  const [checked, setChecked] = useState("");
-  const [people, setPeople] = useState("");
+  const [price, setPrice] = useState(activity[0].price.toString());
 
   const handleTextChange = (input: string) => {
     // Only allow numeric input
@@ -42,7 +41,7 @@ export default function CreateActivityScreen7(prop: Props) {
 
   return (
     <ScrollView style={{ backgroundColor: Colors.light.background }}>
-      <TouchableWithoutFeedback onPress={() => {}}>
+      <TouchableWithoutFeedback onPress={() => { }}>
         <View
           style={{
             flex: 1,
@@ -132,7 +131,10 @@ export default function CreateActivityScreen7(prop: Props) {
                 justifyContent: "center",
                 borderRadius: 10,
               }}
-              onPress={() => prop.navigation.goBack()}
+              onPress={() => {
+                activity[0].price = parseInt(price);
+                prop.navigation.goBack()
+              }}
             >
               <Text
                 style={{
@@ -145,8 +147,9 @@ export default function CreateActivityScreen7(prop: Props) {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              // disabled={price == "" ? true : false}
+              disabled={price == "" ? true : false}
               onPress={() => {
+                activity[0].price = parseInt(price);
                 prop.navigation.push("CreateActivity8");
               }}
               style={{

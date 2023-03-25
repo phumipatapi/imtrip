@@ -10,6 +10,8 @@ import {
 import Colors from "../../constants/Colors";
 import DropDownPicker from "react-native-dropdown-picker";
 import { RadioButton } from "react-native-paper";
+import { Activity, activity } from "../model/createActivity";
+
 
 interface Props {
   navigation: any;
@@ -17,11 +19,11 @@ interface Props {
 }
 
 export default function CreateActivityScreen(prop: Props) {
-  const [city, setCity] = useState("");
-  const [checked, setChecked] = useState("");
+  const [city, setCity] = useState(activity[0].district);
+  const [useToActivity, setuseToActivity] = useState(activity[0].useToActivity);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState([]);
-  const [items, setItems] = useState([
+  const [activityType, setType] = useState(activity[0].activityType);
+  const [typeList, setList] = useState([
     { label: "อาหาร", value: "อาหาร" },
     { label: "ศิลปะ", value: "ศิลปะ" },
     { label: "วัฒนธรรม", value: "วัฒนธรรม" },
@@ -29,6 +31,8 @@ export default function CreateActivityScreen(prop: Props) {
     { label: "ธรรมชาติ", value: "ธรรมชาติ" },
     { label: "สุขภาพ", value: "สุขภาพ" },
   ]);
+
+
 
   return (
     <ScrollView style={{ backgroundColor: Colors.light.background }}>
@@ -66,7 +70,7 @@ export default function CreateActivityScreen(prop: Props) {
               marginTop: 20,
             }}
           >
-            คุณจัดกิจกรรมการท่องเที่ยวที่จังหวัดอะไร?
+            คุณจัดกิจกรรมการท่องเที่ยวเชิงสร้างสรรค์ในจังหวัดใด?
           </Text>
           <TextInput
             style={{
@@ -97,11 +101,11 @@ export default function CreateActivityScreen(prop: Props) {
             placeholderStyle={{ color: Colors.light.grey }}
             textStyle={{ fontFamily: "Mitr_400Regular", fontSize: 18 }}
             open={open}
-            value={value}
-            items={items}
+            value={activityType}
+            items={typeList}
             setOpen={setOpen}
-            setValue={setValue}
-            setItems={setItems}
+            setValue={setType}
+            setItems={setList}
             multiple={true}
             mode="BADGE"
             style={{
@@ -124,12 +128,12 @@ export default function CreateActivityScreen(prop: Props) {
           </Text>
 
           <RadioButton.Group
-            onValueChange={(checked) => setChecked(checked)}
-            value={checked}
+            onValueChange={(checked) => setuseToActivity(checked)}
+            value={useToActivity}
           >
             <RadioButton.Item
               label="ฉันเคยจัดกิจกรรมมาก่อน"
-              value="first"
+              value="true"
               mode="android"
               labelStyle={{ fontFamily: "Mitr_400Regular", fontSize: 18 }}
               color={Colors.light.button}
@@ -137,7 +141,7 @@ export default function CreateActivityScreen(prop: Props) {
             />
             <RadioButton.Item
               label="ฉันไม่เคยจัดกิจกรรมมาก่อน"
-              value="second"
+              value="false"
               mode="android"
               labelStyle={{ fontFamily: "Mitr_400Regular", fontSize: 18 }}
               color={Colors.light.button}
@@ -154,13 +158,23 @@ export default function CreateActivityScreen(prop: Props) {
             }}
           >
             <TouchableOpacity
-              // disabled={city === "" || value.length === 0 || checked === ""}
+              disabled={
+                city === "" ||
+                activityType.length === 0 ||
+                useToActivity === ""
+              }
               onPress={() => {
+                activity[0].district = city;
+                activity[0].activityType = activityType;
+                activity[0].useToActivity = useToActivity;
+
                 prop.navigation.push("CreateActivity2");
               }}
               style={{
                 backgroundColor:
-                  city === "" || value.length === 0 || checked === ""
+                  city === "" ||
+                    activityType.length === 0 ||
+                    useToActivity === ""
                     ? Colors.light.grey
                     : Colors.light.button,
                 width: 90,
@@ -186,3 +200,5 @@ export default function CreateActivityScreen(prop: Props) {
     </ScrollView>
   );
 }
+
+

@@ -12,6 +12,8 @@ import Colors from "../../constants/Colors";
 import Lottie from "lottie-react-native";
 import { ExpandingDot } from "react-native-animated-pagination-dots";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { activity } from "../model/createActivity";
+import axios from "axios";
 interface Props {
   navigation: any;
   route: any;
@@ -19,6 +21,51 @@ interface Props {
 
 export default function CreateActivityScreen8(prop: Props) {
   const [accept, setAccept] = useState(false);
+
+  function clearDraftData() {
+    activity[0].district = "";
+    activity[0].activityType = [];
+    activity[0].useToActivity = "";
+    activity[0].activityName = "";
+    activity[0].time = 0;
+    activity[0].activityDetail = "";
+    activity[0].address = "";
+    activity[0].latitude = 0;
+    activity[0].longitude = 0;
+    activity[0].activityImage = [];
+    activity[0].limit = 0;
+    activity[0].price = 0;
+    activity[0].addressDetail = "";
+  }
+
+  async function fetchActivity() {
+    await axios('https://clumsy-bat-handbag.cyclic.app/activity/insert', {
+      method: "POST",
+      data: {
+        "district": activity[0].district,
+        "activity_type": activity[0].activityType,
+        "is_use_to_activity": activity[0].useToActivity == "true" ? true : false,
+        "activity_name": activity[0].activityName,
+        "activity_detail": activity[0].activityDetail,
+        "activity_time": activity[0].time,
+        "address": activity[0].address,
+        "latitude": activity[0].latitude,
+        "longtitude": activity[0].longitude,
+        "activity_image": activity[0].activityImage,
+        "participation_limit": activity[0].limit,
+        "activity_price": activity[0].price,
+        "status": "pending",
+        "address_detail": activity[0].addressDetail,
+      }
+    })
+      .then(response => response)
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
   const slideData = [
     {
       image: require("../../assets/animatedIcon/time.json"),
@@ -169,8 +216,10 @@ export default function CreateActivityScreen8(prop: Props) {
           />
         </View>
         <TouchableOpacity
-          // disabled={accept == false ? true : false}
+          disabled={accept == false ? true : false}
           onPress={() => {
+            fetchActivity();
+            clearDraftData();
             prop.navigation.push("Home");
           }}
           style={{
@@ -193,6 +242,32 @@ export default function CreateActivityScreen8(prop: Props) {
             }}
           >
             สร้างกิจกรรม
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            prop.navigation.goBack();
+          }}
+          style={{
+            borderColor: Colors.light.button,
+            width: Dimensions.get("window").width - 60,
+            borderWidth: 1,
+            height: 50,
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 10,
+            marginTop: 20,
+            alignSelf: "center",
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "Mitr_400Regular",
+              fontSize: 20,
+              color: Colors.light.button,
+            }}
+          >
+            ย้อนกลับ
           </Text>
         </TouchableOpacity>
       </View>

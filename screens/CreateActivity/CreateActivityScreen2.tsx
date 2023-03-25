@@ -9,37 +9,40 @@ import {
 } from "react-native";
 import Colors from "../../constants/Colors";
 import DropDownPicker from "react-native-dropdown-picker";
-import { RadioButton } from "react-native-paper";
+import { activity } from "../model/createActivity";
 
 interface Props {
   navigation: any;
   route: any;
+  city: string;
+  useToActivity: string;
+  activityType: string[];
 }
 
 export default function CreateActivityScreen2(prop: Props) {
-  const [activityDetail, setDetail] = useState("");
-  const [activityName, setName] = useState("");
+  const [activityDetail, setDetail] = useState(activity[0].activityDetail);
+  const [activityName, setName] = useState(activity[0].activityName);
   const [open, setOpen] = useState(false);
-  const [time, setTime] = useState("");
+  const [time, setTime] = useState(activity[0].time);
   const [items, setItems] = useState([
-    { label: "1 ชั่วโมง", value: "1" },
-    { label: "1 ชั่วโมงครึ่ง", value: "1.5" },
-    { label: "2 ชั่วโมง", value: "2" },
-    { label: "2 ชั่วโมงครึ่ง", value: "2.5" },
-    { label: "3 ชั่วโมง", value: "3" },
-    { label: "3 ชั่วโมงครึ่ง", value: "3.5" },
-    { label: "4 ชั่วโมง", value: "4" },
-    { label: "4 ชั่วโมงครึ่ง", value: "4.5" },
-    { label: "5 ชั่วโมง", value: "5" },
-    { label: "5 ชั่วโมงครึ่ง", value: "5.5" },
-    { label: "6 ชั่วโมง", value: "6" },
-    { label: "6 ชั่วโมงครึ่ง", value: "6.5" },
-    { label: "7 ชั่วโมง", value: "7" },
-    { label: "7 ชั่วโมงครึ่ง", value: "7.5" },
-    { label: "8 ชั่วโมง", value: "8" },
-    { label: "8 ชั่วโมงครึ่ง", value: "8.5" },
-    { label: "9 ชั่วโมง", value: "9" },
-    { label: "9 ชั่วโมงครึ่ง", value: "9.5" },
+    { label: "1 ชั่วโมง", value: 1 },
+    { label: "1 ชั่วโมงครึ่ง", value: 1.5 },
+    { label: "2 ชั่วโมง", value: 2 },
+    { label: "2 ชั่วโมงครึ่ง", value: 2.5 },
+    { label: "3 ชั่วโมง", value: 3 },
+    { label: "3 ชั่วโมงครึ่ง", value: 3.5 },
+    { label: "4 ชั่วโมง", value: 4 },
+    { label: "4 ชั่วโมงครึ่ง", value: 4.5 },
+    { label: "5 ชั่วโมง", value: 5 },
+    { label: "5 ชั่วโมงครึ่ง", value: 5.5 },
+    { label: "6 ชั่วโมง", value: 6 },
+    { label: "6 ชั่วโมงครึ่ง", value: 6.5 },
+    { label: "7 ชั่วโมง", value: 7 },
+    { label: "7 ชั่วโมงครึ่ง", value: 7.5 },
+    { label: "8 ชั่วโมง", value: 8 },
+    { label: "8 ชั่วโมงครึ่ง", value: 8.5 },
+    { label: "9 ชั่วโมง", value: 9 },
+    { label: "9 ชั่วโมงครึ่ง", value: 9.5 },
   ]);
 
   return (
@@ -103,7 +106,7 @@ export default function CreateActivityScreen2(prop: Props) {
               paddingBottom: 40,
             }}
             onChangeText={setName}
-            value={activityDetail}
+            value={activityName}
             placeholder="ตั้งชื่อกิจกรรมของคุณ"
           />
           <Text
@@ -179,7 +182,13 @@ export default function CreateActivityScreen2(prop: Props) {
                 justifyContent: "center",
                 borderRadius: 10,
               }}
-              onPress={() => prop.navigation.goBack()}
+              onPress={() => {
+                activity[0].activityName = activityName;
+                activity[0].activityDetail = activityDetail;
+                activity[0].time = time;
+                console.log(activity[0]);
+                prop.navigation.goBack()
+              }}
             >
               <Text
                 style={{
@@ -192,13 +201,17 @@ export default function CreateActivityScreen2(prop: Props) {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              // disabled={activityDetail == "" || time == ""}
+              disabled={activityDetail == "" || time == 0}
               onPress={() => {
+                activity[0].activityName = activityName;
+                activity[0].activityDetail = activityDetail;
+                activity[0].time = time;
+
                 prop.navigation.push("CreateActivity3");
               }}
               style={{
                 backgroundColor:
-                  activityDetail == "" || time == ""
+                  activityDetail == "" || time == 0
                     ? Colors.light.grey
                     : Colors.light.button,
                 width: 90,
