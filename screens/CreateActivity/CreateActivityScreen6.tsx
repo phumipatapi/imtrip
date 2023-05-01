@@ -38,11 +38,7 @@ export default function CreateActivityScreen6(prop: Props) {
 
   return (
     <ScrollView style={{ backgroundColor: Colors.light.background }}>
-      <TouchableWithoutFeedback
-        onPress={() => {
-
-        }}
-      >
+      <TouchableWithoutFeedback onPress={() => {}}>
         <View
           style={{
             flex: 1,
@@ -133,8 +129,8 @@ export default function CreateActivityScreen6(prop: Props) {
                 borderRadius: 10,
               }}
               onPress={() => {
-                activity[0].limit = parseInt(people);
-                prop.navigation.goBack()
+                activity[0].limit = people;
+                prop.navigation.goBack();
               }}
             >
               <Text
@@ -150,7 +146,7 @@ export default function CreateActivityScreen6(prop: Props) {
             <TouchableOpacity
               disabled={people == "" ? true : false}
               onPress={() => {
-                activity[0].limit = parseInt(people);
+                activity[0].limit = people;
                 prop.navigation.push("CreateActivity7");
               }}
               style={{

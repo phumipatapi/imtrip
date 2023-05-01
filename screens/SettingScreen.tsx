@@ -3,52 +3,58 @@ import * as React from "react";
 import { Text, View, Image, TouchableOpacity, Linking } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Colors from "../constants/Colors";
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { signOut } from "firebase/auth";
+import { authen } from "../firebase_config";
+import { doc, getDocs, updateDoc, collection } from "firebase/firestore";
+import { db } from "../firebase_config";
+
 interface Props {
   navigation: any;
   route: any;
 }
 
 export default function SettingScreen(prop: Props) {
-
-
+  const navigation = useNavigation<StackNavigationProp<any>>();
   const [userName, setUserName] = React.useState<string>("");
   const [userImage, setUserImage] = React.useState<string>("");
   const getProfile = async () => {
     try {
-      const name = await AsyncStorage.getItem('userName');
-      const image = await AsyncStorage.getItem('userImage');
+      const name = await AsyncStorage.getItem("userName");
+      const image = await AsyncStorage.getItem("userImage");
       if (name !== null && image !== null) {
         setUserName(name);
         setUserImage(image);
       }
     } catch (error) {
-      console.log('Error getting access token:', error);
+      console.log("Error getting access token:", error);
     }
   };
   // const handlePress = () => {
   //   prop.navigation.navigate('SignIn');
   // };
 
-  const logOut = async () => {
-
-
+  const handleSignOut = async () => {
     try {
-      await AsyncStorage.removeItem('accessToken');
-      await AsyncStorage.removeItem('userName');
-      await AsyncStorage.removeItem('userImage');
-      await AsyncStorage.removeItem('userEmail');
-
-
-
+      await AsyncStorage.removeItem("accessToken");
+      await AsyncStorage.removeItem("userName");
+      await AsyncStorage.removeItem("userImage");
+      // prop.navigation.dispatch(
+      //   CommonActions.reset({
+      //     index: 0,
+      //     routes: [{ name: "Auth" }],
+      //   })
+      // );
+      signOut(authen);
     } catch (error) {
-      console.log('Error getting access token:', error);
+      console.log("Error getting access token:", error);
     }
-  }
+  };
 
   React.useEffect(() => {
-    getProfile()
-  })
+    getProfile();
+  });
   return (
     <View
       style={{
@@ -65,23 +71,27 @@ export default function SettingScreen(prop: Props) {
           alignItems: "center",
         }}
       >
-        {userImage == "" ? <Image
-          source={require("../assets/icon.png")}
-          style={{
-            height: 52,
-            width: 52,
-            resizeMode: "cover",
-            borderRadius: 26,
-          }}
-        /> : <Image
-          source={{ uri: userImage }}
-          style={{
-            height: 52,
-            width: 52,
-            resizeMode: "cover",
-            borderRadius: 26,
-          }}
-        />}
+        {userImage == "" ? (
+          <Image
+            source={require("../assets/displayImage.png")}
+            style={{
+              height: 52,
+              width: 52,
+              resizeMode: "cover",
+              borderRadius: 26,
+            }}
+          />
+        ) : (
+          <Image
+            source={{ uri: userImage }}
+            style={{
+              height: 52,
+              width: 52,
+              resizeMode: "cover",
+              borderRadius: 26,
+            }}
+          />
+        )}
         <View
           style={{
             flex: 1,
@@ -96,17 +106,31 @@ export default function SettingScreen(prop: Props) {
               color: Colors.light.black,
             }}
           >
-            {userName}
+            {authen.currentUser?.displayName}
           </Text>
-          <Text
+          <TouchableOpacity
             style={{
-              fontFamily: "Mitr_400Regular",
-              fontSize: 18,
-              color: Colors.light.grey,
+              display: "flex",
+
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
-            เข้าร่วมตั้งแต่ เมษายน 2564
-          </Text>
+            <Text
+              style={{
+                fontFamily: "Mitr_400Regular",
+                fontSize: 18,
+                color: Colors.light.grey,
+              }}
+            >
+              ดูข้อมูลส่วนตัว
+            </Text>
+            <MaterialCommunityIcons
+              name="chevron-right"
+              size={22}
+              color={Colors.light.grey}
+            />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -126,29 +150,7 @@ export default function SettingScreen(prop: Props) {
       >
         ตั้งค่า
       </Text>
-      <TouchableOpacity
-        style={{
-          marginTop: 20,
-          flexDirection: "row",
-          alignItems: "center",
-        }}
-      >
-        <MaterialCommunityIcons
-          name="account-outline"
-          size={24}
-          color={"black"}
-        />
-        <Text
-          style={{
-            fontFamily: "Mitr_400Regular",
-            fontSize: 20,
-            color: Colors.light.black,
-            marginLeft: 10,
-          }}
-        >
-          ข้อมูลส่วนตัว
-        </Text>
-      </TouchableOpacity>
+
       <TouchableOpacity
         style={{
           marginTop: 20,
@@ -238,6 +240,7 @@ export default function SettingScreen(prop: Props) {
           flexDirection: "row",
           alignItems: "center",
         }}
+        onPress={() => prop.navigation.navigate("AboutUs")}
       >
         <MaterialCommunityIcons
           name="information-outline"
@@ -261,7 +264,7 @@ export default function SettingScreen(prop: Props) {
           flexDirection: "row",
           alignItems: "center",
         }}
-        onPress={() => logOut()}
+        onPress={() => handleSignOut()}
       >
         <MaterialCommunityIcons name="logout" size={24} color={"red"} />
         <Text

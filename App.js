@@ -7,57 +7,57 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useFonts, Mitr_400Regular, Mitr_600SemiBold } from '@expo-google-fonts/mitr';
 import { Kanit_700Bold } from '@expo-google-fonts/kanit';
 import BottomTabNavigator from "./navigation/TabNavigator";
-import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-auth-session/providers/google';
-import SignInScreen from './screens/auth/SignInScreen';
 import { createStackNavigator } from "@react-navigation/stack";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MainScreen from './screens/MainScreen';
+import SignInScreen from './screens/auth/SignInScreen';
+import { AuthStackNavigator } from './navigation/StackNavigator';
+import { useAuthentication } from './utils/useAuthentication';
+
+
 SplashScreen.preventAutoHideAsync();
+
+const Stack = createStackNavigator();
+
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
-  const [accessToken, setAccessToken] = useState();
-  const [isLogIn, setIsLogIn] = useState(false);
+  const [accessToken, setUserToken] = useState(null);
+
+  const { user } = useAuthentication();
 
 
+  useFonts({ Mitr_400Regular, Mitr_600SemiBold, Kanit_700Bold });
 
-  const Stack = createStackNavigator();
 
-  function AppStack() {
-    return (
-      <Stack.Navigator>
-        <Stack.Screen name="Main" component={BottomTabNavigator} options={{ headerShown: false }} />
-      </Stack.Navigator>
-    );
+  const getUserToken = async () => {
+    const token = await AsyncStorage.getItem('accessToken');
+    setUserToken(token);
   }
-
-  useFonts({
-    Mitr_400Regular,
-    Mitr_600SemiBold,
-    Kanit_700Bold
-  });
 
 
   useEffect(() => {
-
     async function prepare() {
       try {
-        const accessToken = await AsyncStorage.getItem('accessToken');
+        // Load access token from AsyncStorage
 
-        // Pre-load fonts, make any API calls you need to do here
+
+        // Pre-load fonts and wait for 2 seconds
         await Font.loadAsync(Entypo.font);
-
         await new Promise(resolve => setTimeout(resolve, 2000));
       } catch (e) {
         console.warn(e);
       } finally {
-
         setAppIsReady(true);
       }
     }
-
     prepare();
+  }, []);
+
+  useEffect(() => {
+    getUserToken();
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
@@ -69,19 +69,29 @@ export default function App() {
   if (!appIsReady) {
     return null;
   }
-
   return (
-    // <SignInScreen />
-
     <NavigationContainer onReady={onLayoutRootView}>
       <SafeAreaView style={{ flex: 1 }}>
-        {accessToken != null ? <AppStack /> : <SignInScreen setAccessToken={
-          (accessToken) => {
-            setAccessToken(accessToken);
-          }
-        } />}
+        <Stack.Navigator>
+          {user
+            ? (
+              <Stack.Screen
+                name="Main"
+                component={BottomTabNavigator}
+                options={{ headerShown: false }}
+
+              />
+
+            ) : (
+              <Stack.Screen
+                name="Auth"
+                component={AuthStackNavigator}
+                options={{ headerShown: false }}
+              // initialParams={{ setUserToken }}
+              />
+            )}
+        </Stack.Navigator>
       </SafeAreaView>
     </NavigationContainer>
-
   );
 }

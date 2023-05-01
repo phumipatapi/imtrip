@@ -8,6 +8,7 @@ import {
   MessageStackNavigator,
 } from "./StackNavigator";
 import Colors from "../constants/Colors";
+import MainScreen from "../screens/MainScreen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Tab = createBottomTabNavigator();

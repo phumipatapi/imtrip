@@ -22,7 +22,6 @@ interface Props {
 }
 
 export default function CreateActivityScreen4(prop: Props) {
-
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
@@ -241,7 +240,7 @@ export default function CreateActivityScreen4(prop: Props) {
                 activity[0].facilityFood = value;
                 activity[0].facilityTravel = travel;
                 activity[0].facilityOther = etc;
-                prop.navigation.goBack()
+                prop.navigation.goBack();
               }}
             >
               <Text
@@ -255,7 +254,6 @@ export default function CreateActivityScreen4(prop: Props) {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              disabled={value.length == 0 && travel.length == 0 && etc.length == 0}
               onPress={() => {
                 activity[0].facilityFood = value;
                 activity[0].facilityTravel = travel;
@@ -263,7 +261,6 @@ export default function CreateActivityScreen4(prop: Props) {
                 prop.navigation.push("CreateActivity5");
               }}
               style={{
-
                 backgroundColor: Colors.light.button,
                 width: 90,
                 height: 50,

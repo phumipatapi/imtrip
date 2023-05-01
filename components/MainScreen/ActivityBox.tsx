@@ -10,7 +10,6 @@ import Colors from "../../constants/Colors";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 export interface ActivityBoxProps {
-
   viewer: number;
   booking: number;
   rating: number;
@@ -64,7 +63,7 @@ const ActivityBox = (props: ActivityBoxProps) => {
           style={{
             fontFamily: "Mitr_400Regular",
             color: Colors.light.background,
-            fontSize: 20,
+            fontSize: 24,
           }}
         >
           {props.activityName}
@@ -101,7 +100,7 @@ const ActivityBox = (props: ActivityBoxProps) => {
               style={{
                 fontFamily: "Mitr_400Regular",
                 color: Colors.light.grey,
-                fontSize: RFPercentage(1.5),
+                fontSize: RFPercentage(2),
               }}
             >
               ผู้เข้าดู
@@ -121,7 +120,7 @@ const ActivityBox = (props: ActivityBoxProps) => {
               style={{
                 fontFamily: "Mitr_400Regular",
                 color: Colors.light.grey,
-                fontSize: RFPercentage(1.5),
+                fontSize: RFPercentage(2),
               }}
             >
               ดำเนินการจอง
@@ -141,7 +140,7 @@ const ActivityBox = (props: ActivityBoxProps) => {
               style={{
                 fontFamily: "Mitr_400Regular",
                 color: Colors.light.grey,
-                fontSize: RFPercentage(1.5),
+                fontSize: RFPercentage(2),
               }}
             >
               เรทติ้ง
@@ -161,7 +160,7 @@ const ActivityBox = (props: ActivityBoxProps) => {
               style={{
                 fontFamily: "Mitr_400Regular",
                 color: Colors.light.grey,
-                fontSize: RFPercentage(1.5),
+                fontSize: RFPercentage(2),
               }}
             >
               จองทั้งหมด

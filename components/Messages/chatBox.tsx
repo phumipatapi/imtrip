@@ -6,11 +6,17 @@ interface Props {
   senderName: string;
   time: string;
   lastestMessage: string;
+  navigation: any;
 }
 
 const ChatBox = (props: Props) => {
   return (
-    <TouchableOpacity style={{}}>
+    <TouchableOpacity
+      onPress={() => {
+        props.navigation.navigate("Chat");
+      }}
+      style={{}}
+    >
       <View
         style={{
           flexDirection: "row",

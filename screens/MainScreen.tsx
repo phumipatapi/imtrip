@@ -16,6 +16,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ActivityList from "../components/MainScreen/ActivityList";
 import { ScrollView } from "react-native-gesture-handler";
+import { authen } from "../firebase_config";
 
 interface Props {
   navigation: any;
@@ -27,20 +28,20 @@ export default function MainScreen(props: Props) {
 
   const getProfile = async () => {
     try {
-      const name = await AsyncStorage.getItem('userName');
-      const image = await AsyncStorage.getItem('userImage');
+      const name = await AsyncStorage.getItem("userName");
+      const image = await AsyncStorage.getItem("userImage");
       if (name !== null && image !== null) {
         setUserName(name);
         setUserImage(image);
       }
     } catch (error) {
-      console.log('Error getting access token:', error);
+      console.log("Error getting access token:", error);
     }
   };
 
   React.useEffect(() => {
-    getProfile()
-  })
+    getProfile();
+  });
 
   return (
     <View
@@ -48,8 +49,8 @@ export default function MainScreen(props: Props) {
         flex: 1,
         flexDirection: "column",
         backgroundColor: Colors.light.tabBar,
-
-      }}>
+      }}
+    >
       <ScrollView style={{ backgroundColor: Colors.light.background }}>
         <View
           style={{
@@ -63,7 +64,7 @@ export default function MainScreen(props: Props) {
                   ? StatusBar.currentHeight + 20
                   : 30
                 : 10,
-            paddingBottom: 30
+            paddingBottom: 30,
           }}
         >
           <View
@@ -80,50 +81,48 @@ export default function MainScreen(props: Props) {
               <Text
                 style={{
                   fontFamily: "Mitr_400Regular",
-                  fontSize: 18,
+                  fontSize: 22,
                   color: Colors.light.grey,
                 }}
               >
-                {userName}
+                {authen.currentUser?.displayName}
               </Text>
             </View>
 
-            <TouchableOpacity onPress={() => props.navigation.navigate("Setting")}>
-              {userImage == "" ? <Image
-                source={require("../assets/icon.png")}
-                style={{
-                  height: 52,
-                  width: 52,
-                  resizeMode: "cover",
-                  borderRadius: 26,
-                }}
-              /> : <Image
-                source={{ uri: userImage }}
-                style={{
-                  height: 52,
-                  width: 52,
-                  resizeMode: "cover",
-                  borderRadius: 26,
-                }}
-              />}
-
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate("Setting")}
+            >
+              {userImage == "" ? (
+                <Image
+                  source={require("../assets/displayImage.png")}
+                  style={{
+                    height: 52,
+                    width: 52,
+                    resizeMode: "contain",
+                    borderRadius: 26,
+                  }}
+                />
+              ) : (
+                <Image
+                  source={{ uri: userImage }}
+                  style={{
+                    height: 52,
+                    width: 52,
+                    resizeMode: "cover",
+                    borderRadius: 26,
+                  }}
+                />
+              )}
             </TouchableOpacity>
           </View>
 
-          <ActivityList navigation={
-            props.navigation
-          } />
-          <View>
-
-
-          </View>
+          <ActivityList navigation={props.navigation} />
         </View>
-
       </ScrollView>
       <TouchableOpacity
         style={{
-          alignSelf: 'center',
-          position: 'absolute',
+          alignSelf: "center",
+          position: "absolute",
           bottom: 15,
           // right: 0,
           // left: 0,
@@ -143,7 +142,6 @@ export default function MainScreen(props: Props) {
           shadowOpacity: 0.22,
           shadowRadius: 2.22,
           marginHorizontal: 30,
-
         }}
         onPress={() => props.navigation.push("CreateActivity")}
       >
@@ -156,6 +154,7 @@ export default function MainScreen(props: Props) {
         >
           สร้างกิจกรรมใหม่
         </Text>
-      </TouchableOpacity></View>
+      </TouchableOpacity>
+    </View>
   );
 }

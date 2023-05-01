@@ -22,6 +22,12 @@ import ActivityInfoScreen from "../screens/ActivityInfo/ActivityInfoScreen";
 import BookingDetailScreen from "../screens/BookingDetail/BookingDetailScreen";
 import { activity } from "../screens/model/createActivity";
 import SignInScreen from "../screens/auth/SignInScreen";
+import SignUpScreen from "../screens/auth/SignUpScreen";
+import TermAndConditionsScreen from "../screens/TermAndCondition";
+import ChatScreen from "../screens/Chat/ChatScreen";
+import Chat from "../screens/Chat/ChatScreen";
+import MonthReportScreen from "../screens/InsightTab/MonthReportScreen";
+import AboutUsScreen from "../screens/AboutScreen";
 
 const Stack = createStackNavigator();
 
@@ -29,19 +35,31 @@ const AuthStackNavigator = ({ navigation, route }) => {
   React.useLayoutEffect(() => {
     const tabHiddenRoutes = ["SignIn"];
     const routeName = getFocusedRouteNameFromRoute(route);
+    if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
+      navigation.setOptions({ tabBarStyle: { display: 'none' } });
+    } else {
+      navigation.setOptions({ tabBarStyle: { display: 'flex', height: 65, } });
+    }
   })
-  if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
-    navigation.setOptions({ tabBarStyle: { display: 'none' } });
-  } else {
-    navigation.setOptions({ tabBarStyle: { display: 'flex', height: 65, } });
-  }
+
   return (
-    <Stack.Navigator>
+    <Stack.Navigator name="AuthStack">
       <Stack.Screen
         name="SignIn"
         component={SignInScreen}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="SignUp"
+        component={SignUpScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Term"
+        component={TermAndConditionsScreen}
+        options={{ headerShown: false }}
+      />
+
     </Stack.Navigator>
   );
 }
@@ -50,7 +68,7 @@ const AuthStackNavigator = ({ navigation, route }) => {
 const MainStackNavigator = ({ navigation, route }) => {
 
   React.useLayoutEffect(() => {
-    const tabHiddenRoutes = ["CreateActivity", "CreateActivity2", "CreateActivity3", "CreateActivity4", "CreateActivity5", "CreateActivity6", "CreateActivity7", "CreateActivity8", "TermAndCondition", "ActivityInfo", "BookingDetail", "SignIn"];
+    const tabHiddenRoutes = ["CreateActivity", "CreateActivity2", "CreateActivity3", "CreateActivity4", "CreateActivity5", "CreateActivity6", "CreateActivity7", "CreateActivity8", "TermAndCondition", "ActivityInfo", "BookingDetail", "SignIn", "AboutUs", "Chat", "MonthReport"];
     const routeName = getFocusedRouteNameFromRoute(route);
     if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
       navigation.setOptions({ tabBarStyle: { display: 'none' } });
@@ -445,6 +463,31 @@ const MainStackNavigator = ({ navigation, route }) => {
           },
         })}
       />
+      <Stack.Screen
+        name="AboutUs"
+        component={AboutUsScreen}
+        options={({ navigation, route }) => ({
+          // headerStyle: { paddingBottom: 20 },
+          title: "เกี่ยวกับเรา",
+          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
+          headerLeft: (props) => {
+            return (
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={{
+                  paddingLeft: 10,
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="chevron-left"
+                  size={40}
+                  color={Colors.light.grey}
+                />
+              </TouchableOpacity>
+            );
+          },
+        })}
+      />
     </Stack.Navigator>
   );
 };
@@ -457,6 +500,32 @@ const PlanningStackNavigator = () => {
         options={{
           headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
         }}
+      />
+      <Stack.Screen
+        name="BookingDetail"
+        component={BookingDetailScreen}
+        options={({ navigation, route }) => ({
+          // headerStyle: { paddingBottom: 20 },
+          title: "",
+          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
+          headerLeft: (props) => {
+            return (
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={{
+                  paddingLeft: 10,
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="chevron-left"
+                  size={40}
+                  color={Colors.light.grey}
+                />
+              </TouchableOpacity>
+            );
+          },
+
+        })}
       />
     </Stack.Navigator>
   );
@@ -472,7 +541,16 @@ const InsightStackNavigator = () => {
           headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
         }}
       />
+      <Stack.Screen
+        name="MonthReport"
+        component={MonthReportScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+
     </Stack.Navigator>
+
   );
 };
 const MessageStackNavigator = () => {
@@ -485,6 +563,14 @@ const MessageStackNavigator = () => {
           headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
         }}
       />
+      <Stack.Screen
+        name="Chat"
+        component={Chat}
+        options={{
+          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
+        }}
+      />
+
     </Stack.Navigator>
   );
 };

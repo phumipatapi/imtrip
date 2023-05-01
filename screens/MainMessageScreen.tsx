@@ -26,7 +26,11 @@ const chat = [
   },
 ];
 
-export default function MainMessageScreen() {
+interface Props {
+  navigation: any;
+}
+
+export default function MainMessageScreen(props: Props) {
   return (
     <View
       style={{
@@ -51,6 +55,7 @@ export default function MainMessageScreen() {
             senderName={item.senderName}
             time={item.time}
             lastestMessage={item.lastestMessage}
+            navigation={props.navigation}
           />
         )}
         keyExtractor={(chat) => chat.id}

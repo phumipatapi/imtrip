@@ -11,8 +11,10 @@ export default {
     tabBar: "#fefefe",
     black: "#000000",
     grey: "#C9C9C9",
-    button: "#DAB88B",
+    button: "#609966",
     darkGrey: "#9A9A9A",
+    red: "#FF0000",
+    lightGreen: "#9DC08B",
   },
   dark: {
     text: "#fff",

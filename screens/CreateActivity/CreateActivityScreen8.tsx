@@ -14,6 +14,7 @@ import { ExpandingDot } from "react-native-animated-pagination-dots";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { activity } from "../model/createActivity";
 import axios from "axios";
+import { authen } from "../../firebase_config";
 interface Props {
   navigation: any;
   route: any;
@@ -33,36 +34,37 @@ export default function CreateActivityScreen8(prop: Props) {
     activity[0].latitude = 0;
     activity[0].longitude = 0;
     activity[0].activityImage = [];
-    activity[0].limit = 0;
-    activity[0].price = 0;
+    activity[0].limit = "";
+    activity[0].price = "";
     activity[0].addressDetail = "";
   }
 
   async function fetchActivity() {
-    await axios('https://clumsy-bat-handbag.cyclic.app/activity/insert', {
+    await axios("https://clumsy-bat-handbag.cyclic.app/activity/insert", {
       method: "POST",
       data: {
-        "district": activity[0].district,
-        "activity_type": activity[0].activityType,
-        "is_use_to_activity": activity[0].useToActivity == "true" ? true : false,
-        "activity_name": activity[0].activityName,
-        "activity_detail": activity[0].activityDetail,
-        "activity_time": activity[0].time,
-        "address": activity[0].address,
-        "latitude": activity[0].latitude,
-        "longtitude": activity[0].longitude,
-        "activity_image": activity[0].activityImage,
-        "participation_limit": activity[0].limit,
-        "activity_price": activity[0].price,
-        "status": "pending",
-        "address_detail": activity[0].addressDetail,
-      }
+        district: activity[0].district,
+        activity_type: activity[0].activityType,
+        is_use_to_activity: activity[0].useToActivity == "true" ? true : false,
+        activity_name: activity[0].activityName,
+        activity_detail: activity[0].activityDetail,
+        activity_time: activity[0].time,
+        address: activity[0].address,
+        latitude: activity[0].latitude,
+        longtitude: activity[0].longitude,
+        activity_image: activity[0].activityImage,
+        participation_limit: parseInt(activity[0].limit),
+        activity_price: parseInt(activity[0].price),
+        status: "pending",
+        address_detail: activity[0].addressDetail,
+        user_id: authen.currentUser?.uid,
+      },
     })
-      .then(response => response)
-      .then(data => {
+      .then((response) => response)
+      .then((data) => {
         console.log(data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }
