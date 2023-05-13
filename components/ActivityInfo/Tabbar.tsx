@@ -3,7 +3,6 @@ import Colors from "../../constants/Colors";
 import BookingList from "../../screens/ActivityInfo/BookingListScreen";
 import ManageScreen from "../../screens/ActivityInfo/ManageScreen";
 import ReviewList from "../../screens/ActivityInfo/ReviewListScreen";
-import MainInsightScreen from "../../screens/MainInsightScreen";
 
 const Tab = createMaterialTopTabNavigator();
 

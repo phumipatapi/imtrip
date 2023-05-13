@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Image } from "react-native";
+import { Text, View, Image,ScrollView, Alert } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import ActivityBox, { ActivityBoxProps } from "./ActivityBox";
 import Lottie from "lottie-react-native";
 import { authen } from "../../firebase_config";
 import Colors from "../../constants/Colors";
 import { useIsFocused } from "@react-navigation/native";
+import HorizontalActivityBox from "./HorizontalActivityBox";
+import { getDistance } from "geolib";
+import * as Location from 'expo-location';
 
 interface ActivityData {
   _id: string;
@@ -34,9 +37,16 @@ interface ActivityListProps {
   navigation: any;
 }
 
-const ActivityList = ({ navigation }: ActivityListProps) => {
+const HorizontalActivityList = ({ navigation }: ActivityListProps) => {
   const [activityData, setActivityData] = useState<ActivityData[]>([]);
   const isFocused = useIsFocused();
+  const [location, setLocation] = useState({
+    latitude: 0,
+    longitude: 0,
+    latitudeDelta: 0.05,
+    longitudeDelta: 0.06,
+  });
+  const [errorMsg, setErrorMsg] = useState();
 
   useEffect(() => {
     async function fetchActivityData() {
@@ -49,33 +59,73 @@ const ActivityList = ({ navigation }: ActivityListProps) => {
           setActivityData(data.payload.data);
         }
       } catch (error) {
-        console.error(error);
+       
       }
     }
 
+    (async () => {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+  
+        if (status !== "granted") {
+          Alert.alert(
+            "Insufficient permissions!",
+            "Sorry, we need location permissions to make this work!",
+            [{ text: "Okay" }]
+          );
+          return;
+        }
+        let location = await Location.getCurrentPositionAsync({});
+  
+        setLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.02,
+        });
+        // searchByLatLon(location.coords.latitude, location.coords.longitude);
+      })();
     fetchActivityData();
   }, []);
 
-  const activityBoxes =
-    activityData?.length > 0 ? (
-      activityData.sort(() => Math.random() - 0.5).map((activity) =>
-        activity._id ? (
-          <ActivityBox
-            key={activity._id}
-            price={activity?.activity_price}
-            district={activity?.district}
-            activityName={activity?.activity_name}
-            activityImage={activity?.activity_image}
-            viewer={0}
-            booking={0}
-            rating={0}
-            allbooking={0}
-            onPress={() =>
-              navigation.push("ActivityInfo", { activityId: activity._id })
-            }
-          />
-        ) : null
+  const calculateDistance = (activity: ActivityData) => {
+    const distance = getDistance(
+      { latitude: activity.latitude, longitude: activity.longtitude },
+      { latitude: location.latitude!, longitude: location.longitude!}
+    );
+
+    return distance;
+  };
+
+  const sortedActivityData =
+  activityData?.length > 0
+    ? [...activityData].sort(
+        (a, b) => calculateDistance(a) - calculateDistance(b)
       )
+    : [];
+
+ 
+  const activityBoxes =
+  sortedActivityData?.length > 0 ? (
+        <ScrollView horizontal style={{paddingLeft: 5}} showsHorizontalScrollIndicator={false} >
+        {sortedActivityData.map((activity) =>
+          activity._id ? (
+            <HorizontalActivityBox
+             district={activity?.district}
+              key={activity._id}
+              price={activity?.activity_price}
+              activityName={activity?.activity_name}
+              activityImage={activity?.activity_image}
+              viewer={0}
+              booking={0}
+              rating={0}
+              allbooking={0}
+              onPress={() =>
+                navigation.push("ActivityInfo", { activityId: activity._id })
+              }
+            />
+          ) : null
+        )}
+      </ScrollView>
     ) : (
       <View
         style={{
@@ -123,16 +173,16 @@ const ActivityList = ({ navigation }: ActivityListProps) => {
   return <View style={{
     marginTop: 20
   }}>
-    <Text style={{
-      fontFamily: "Mitr_400Regular",
-      color: Colors.light.black,
-      fontSize: 22,
-      marginBottom: 20
-    }}>
-      กิจกรรมที่น่าสนใจ
+    <Text  style={{
+                fontFamily: "Mitr_400Regular",
+                color: Colors.light.black,
+                fontSize: 22,
+               marginBottom: 20
+              }}>
+        กิจกรรมใกล้เคียง
     </Text>
     {activityBoxes}
-  </View>;
+    </View>;
 };
 
-export default ActivityList;
+export default HorizontalActivityList;

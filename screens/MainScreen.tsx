@@ -7,6 +7,7 @@ import {
   Platform,
   StatusBar,
   Dimensions,
+  TextInput
 } from "react-native";
 import Colors from "../constants/Colors";
 import ActivityBox from "../components/MainScreen/ActivityBox";
@@ -17,6 +18,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import ActivityList from "../components/MainScreen/ActivityList";
 import { ScrollView } from "react-native-gesture-handler";
 import { authen } from "../firebase_config";
+import HorizontalActivityBox from "../components/MainScreen/HorizontalActivityBox";
+import HorizontalActivityList from "../components/MainScreen/HorizontalActivityList";
 
 interface Props {
   navigation: any;
@@ -115,46 +118,29 @@ export default function MainScreen(props: Props) {
               )}
             </TouchableOpacity>
           </View>
-
+          <View>
+            <TextInput
+              style={{
+                marginTop: 20,
+                borderRadius: 15,
+                paddingHorizontal: 10,
+                borderColor: Colors.light.grey,
+                backgroundColor: "#FFF",
+                borderWidth: 1,
+                height: 45,
+                fontSize: 18,
+                fontFamily: "Mitr_400Regular",
+                // marginHorizontal: 20,
+              }}
+              placeholder={"ค้นหากิจกรรม"}
+              onPressIn={() => props.navigation.navigate("Search")}
+            />
+          </View>
+          <HorizontalActivityList navigation={props.navigation} />
           <ActivityList navigation={props.navigation} />
         </View>
       </ScrollView>
-      <TouchableOpacity
-        style={{
-          alignSelf: "center",
-          position: "absolute",
-          bottom: 15,
-          // right: 0,
-          // left: 0,
-          height: 50,
-          width: Dimensions.get("window").width - 70,
-          backgroundColor: Colors.light.button,
-          justifyContent: "center",
-          alignItems: "center",
-          borderRadius: 20,
-          marginTop: 40,
-          elevation: 3,
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.22,
-          shadowRadius: 2.22,
-          marginHorizontal: 30,
-        }}
-        onPress={() => props.navigation.push("CreateActivity")}
-      >
-        <Text
-          style={{
-            fontFamily: "Mitr_400Regular",
-            fontSize: 18,
-            color: Colors.light.background,
-          }}
-        >
-          สร้างกิจกรรมใหม่
-        </Text>
-      </TouchableOpacity>
+
     </View>
   );
 }

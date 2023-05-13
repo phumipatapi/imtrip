@@ -15,6 +15,7 @@ export default {
     darkGrey: "#9A9A9A",
     red: "#FF0000",
     lightGreen: "#9DC08B",
+    yellow: "#FCC981"
   },
   dark: {
     text: "#fff",

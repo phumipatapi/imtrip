@@ -133,23 +133,24 @@ export default function SettingScreen(prop: Props) {
           </TouchableOpacity>
         </View>
       </View>
-
-      <View
-        style={{
-          marginTop: 20,
-          borderBottomColor: Colors.light.grey,
-          borderBottomWidth: 1,
-        }}
-      />
       <Text
         style={{
           fontFamily: "Mitr_400Regular",
           fontSize: 18,
           color: Colors.light.grey,
+          marginTop: 30,
         }}
       >
         ตั้งค่า
       </Text>
+      <View
+        style={{
+         
+          borderBottomColor: Colors.light.grey,
+          borderBottomWidth: 1,
+        }}
+      />
+     
 
       <TouchableOpacity
         style={{
@@ -170,22 +171,24 @@ export default function SettingScreen(prop: Props) {
           การแจ้งเตือน
         </Text>
       </TouchableOpacity>
-      <View
-        style={{
-          marginTop: 20,
-          borderBottomColor: Colors.light.grey,
-          borderBottomWidth: 1,
-        }}
-      />
       <Text
         style={{
           fontFamily: "Mitr_400Regular",
           fontSize: 18,
           color: Colors.light.grey,
+          marginTop: 20
         }}
       >
         อื่น ๆ
       </Text>
+      <View
+        style={{
+          marginTop: 0,
+          borderBottomColor: Colors.light.grey,
+          borderBottomWidth: 1,
+        }}
+      />
+    
       <TouchableOpacity
         style={{
           marginTop: 20,

@@ -1,8 +1,8 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import MainScreen from "../screens/MainScreen";
-import MainInsightScreen from "../screens/MainInsightScreen";
-import MainPlanningScreen from "../screens/MainPlanningScreen";
+import MainWishlist from "../screens/MainWishlistScreen";
+import MainBookingScreen from "../screens/MainBookingScreen";
 import MainMessageScreen from "../screens/MainMessageScreen";
 import CreateActivityScreen from "../screens/CreateActivity/CreateActivityScreen";
 import CreateActivityScreen2 from "../screens/CreateActivity/CreateActivityScreen2";
@@ -28,6 +28,10 @@ import ChatScreen from "../screens/Chat/ChatScreen";
 import Chat from "../screens/Chat/ChatScreen";
 import MonthReportScreen from "../screens/InsightTab/MonthReportScreen";
 import AboutUsScreen from "../screens/AboutScreen";
+import SearchScreen from "../screens/SearchScreen";
+import PaymentScreen from "../screens/Payment/PaymentScreen";
+import ChoosePayment from "../screens/Payment/ChoosePaymentScreen";
+import SuccessPayment from "../screens/Payment/SuccessPaymentScreen";
 
 const Stack = createStackNavigator();
 
@@ -68,7 +72,7 @@ const AuthStackNavigator = ({ navigation, route }) => {
 const MainStackNavigator = ({ navigation, route }) => {
 
   React.useLayoutEffect(() => {
-    const tabHiddenRoutes = ["CreateActivity", "CreateActivity2", "CreateActivity3", "CreateActivity4", "CreateActivity5", "CreateActivity6", "CreateActivity7", "CreateActivity8", "TermAndCondition", "ActivityInfo", "BookingDetail", "SignIn", "AboutUs", "Chat", "MonthReport"];
+    const tabHiddenRoutes = ["SuccessPayment","CreateActivity", "CreateActivity2", "CreateActivity3", "CreateActivity4", "CreateActivity5", "CreateActivity6", "CreateActivity7", "CreateActivity8", "TermAndCondition", "ActivityInfo", "BookingDetail", "SignIn", "AboutUs", "Chat", "MonthReport","Payment"];
     const routeName = getFocusedRouteNameFromRoute(route);
     if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
       navigation.setOptions({ tabBarStyle: { display: 'none' } });
@@ -101,6 +105,12 @@ const MainStackNavigator = ({ navigation, route }) => {
         component={MainScreen}
         options={{ headerShown: false }}
       />
+       <Stack.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{ headerShown: false }}
+      />
+      
       <Stack.Screen
         name="CreateActivity"
         component={CreateActivityScreen}
@@ -337,9 +347,63 @@ const MainStackNavigator = ({ navigation, route }) => {
       <Stack.Screen
         name="ActivityInfo"
         component={ActivityInfoScreen}
+        options={{ headerShown: false }}
+        // options={({ navigation, route }) => ({
+        //   // headerStyle: { paddingBottom: 20 },
+        //   // title: "",
+        //   // headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
+        //   // headerLeft: (props) => {
+        //   //   return (
+        //   //     <TouchableOpacity
+        //   //       onPress={() => navigation.goBack()}
+        //   //       style={{
+        //   //         paddingLeft: 10,
+        //   //       }}
+        //   //     >
+        //   //       <MaterialCommunityIcons
+        //   //         name="chevron-left"
+        //   //         size={40}
+        //   //         color={Colors.light.grey}
+        //   //       />
+        //   //     </TouchableOpacity>
+        //   //   );
+        //   // },
+        //   // headerRight: (props) => {
+        //   //   return <View style={{ flexDirection: "row" }}>
+        //   //     <TouchableOpacity
+        //   //       onPress={() => navigation.goBack()}
+        //   //       style={{
+        //   //         paddingRight: 15,
+        //   //       }}
+        //   //     >
+        //   //       <MaterialCommunityIcons
+        //   //         name="eye"
+        //   //         size={30}
+        //   //         color={Colors.light.grey}
+        //   //       />
+        //   //     </TouchableOpacity>
+        //   //     <TouchableOpacity
+        //   //       onPress={() => navigation.goBack()}
+        //   //       style={{
+        //   //         paddingRight: 20,
+        //   //       }}
+        //   //     >
+        //   //       <MaterialCommunityIcons
+        //   //         name="square-edit-outline"
+        //   //         size={30}
+        //   //         color={Colors.light.grey}
+        //   //       />
+        //   //     </TouchableOpacity>
+        //   //   </View>
+        //   // }
+        // })}
+      />
+        <Stack.Screen
+        name="Payment"
+        component={PaymentScreen}
         options={({ navigation, route }) => ({
           // headerStyle: { paddingBottom: 20 },
-          title: "",
+          title: "การจองและชำระเงิน",
           headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
           headerLeft: (props) => {
             return (
@@ -357,35 +421,39 @@ const MainStackNavigator = ({ navigation, route }) => {
               </TouchableOpacity>
             );
           },
-          headerRight: (props) => {
-            return <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity
-                onPress={() => navigation.goBack()}
-                style={{
-                  paddingRight: 15,
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="eye"
-                  size={30}
-                  color={Colors.light.grey}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.goBack()}
-                style={{
-                  paddingRight: 20,
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="square-edit-outline"
-                  size={30}
-                  color={Colors.light.grey}
-                />
-              </TouchableOpacity>
-            </View>
-          }
+
         })}
+      />
+       <Stack.Screen
+        name="ChoosePayment"
+        component={ChoosePayment}
+        options={({ navigation, route }) => ({
+          // headerStyle: { paddingBottom: 20 },
+          title: "การชำระเงิน",
+          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
+          headerLeft: (props) => {
+            return (
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={{
+                  paddingLeft: 10,
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="chevron-left"
+                  size={40}
+                  color={Colors.light.grey}
+                />
+              </TouchableOpacity>
+            );
+          },
+
+        })}
+      />
+       <Stack.Screen
+        name="SuccessPayment"
+        component={SuccessPayment}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="BookingDetail"
@@ -491,12 +559,12 @@ const MainStackNavigator = ({ navigation, route }) => {
     </Stack.Navigator>
   );
 };
-const PlanningStackNavigator = () => {
+const BookingStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="ปฏิทินกิจกรรม"
-        component={MainPlanningScreen}
+        name="กิจกรรมของฉัน"
+        component={MainBookingScreen}
         options={{
           headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
         }}
@@ -531,12 +599,12 @@ const PlanningStackNavigator = () => {
   );
 };
 
-const InsightStackNavigator = () => {
+const FavoriteStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="ข้อมูลเชิงลึก"
-        component={MainInsightScreen}
+        name="กิจกรรมโปรด"
+        component={MainWishlist}
         options={{
           headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
         }}
@@ -578,7 +646,7 @@ const MessageStackNavigator = () => {
 export {
   AuthStackNavigator,
   MainStackNavigator,
-  PlanningStackNavigator,
-  InsightStackNavigator,
+  BookingStackNavigator,
+  FavoriteStackNavigator,
   MessageStackNavigator,
 };

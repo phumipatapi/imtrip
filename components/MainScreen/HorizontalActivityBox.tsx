@@ -18,13 +18,13 @@ export interface ActivityBoxProps {
   allbooking: number;
   activityName: string;
   activityImage: string[];
-  price : number;
   district: string;
+  price: number;
   
   onPress: () => void;
 }
 
-const ActivityBox = (props: ActivityBoxProps) => {
+const HorizontalActivityBox = (props: ActivityBoxProps) => {
   return (
     <TouchableOpacity
       style={{
@@ -36,12 +36,13 @@ const ActivityBox = (props: ActivityBoxProps) => {
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-
+        width : 180,
         elevation: 5,
-       
+        
         backgroundColor: Colors.light.black,
         borderRadius: 20,
-        marginBottom: 30
+        marginRight: 20,
+        marginBottom: 10
       }}
       onPress={props.onPress}
     >
@@ -50,13 +51,33 @@ const ActivityBox = (props: ActivityBoxProps) => {
         style={{
           width: "100%",
           height: "65%",
-          borderTopLeftRadius: 15,
-          borderTopRightRadius: 15,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
           opacity: 0.9,
+          resizeMode: 'cover'
         }}
       />
       <FavoriteButton backgroundColor={"rgba(0,0,0,0.6)"} iconColor={Colors.light.background} iconSize={24} touchableSize={30}/>
-    
+      {/* <View
+        style={{
+          position: "absolute",
+          top: 40,
+          left: 20,
+          right: 0,
+          bottom: 0,
+          justifyContent: "center",
+        }}
+      >
+        <Text
+          style={{
+            fontFamily: "Mitr_400Regular",
+            color: Colors.light.background,
+            fontSize: 24,
+          }}
+        >
+          {props.activityName}
+        </Text>
+      </View> */}
 
       <View
         style={{
@@ -65,25 +86,24 @@ const ActivityBox = (props: ActivityBoxProps) => {
           borderBottomEndRadius: 20,
           borderBottomLeftRadius: 20,
           justifyContent: "center",
-          padding: 15
+          padding: 10
         }}
       >
-    
-        <Text
+    <Text
           style={{
             fontFamily: "Mitr_600SemiBold",
             color: Colors.light.black,
-            fontSize: 20,
-            height: 26
+            fontSize: 16,
+            height: 22
           }}
         >
           {props.activityName}
-        </Text>
+        </Text> 
         <Text
           style={{
             fontFamily: "Mitr_400Regular",
             color: Colors.light.black,
-            fontSize: 16,
+            fontSize: 14,
           }}
         >
          {props.district}
@@ -98,7 +118,7 @@ const ActivityBox = (props: ActivityBoxProps) => {
           style={{
             fontFamily: "Mitr_400Regular",
             color: Colors.light.darkGrey,
-            fontSize: 16,
+            fontSize: 14,
           }}
         >
           ฿ {props.price}
@@ -109,7 +129,7 @@ const ActivityBox = (props: ActivityBoxProps) => {
             marginRight: 5,
             fontFamily: "Mitr_400Regular",
             color: Colors.light.grey,
-            fontSize: 16,
+            fontSize: 14,
           }}
         >
           |
@@ -125,17 +145,15 @@ const ActivityBox = (props: ActivityBoxProps) => {
            
             fontFamily: "Mitr_400Regular",
             color: Colors.light.darkGrey,
-            fontSize: 16,
+            fontSize: 14,
           }}
         >
          {props.rating}
         </Text>
         </View>
       </View>
-      
-     
     </TouchableOpacity>
   );
 };
 
-export default ActivityBox;
+export default HorizontalActivityBox;

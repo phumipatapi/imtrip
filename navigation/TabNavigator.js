@@ -3,8 +3,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View, SafeAreaView } from "react-native";
 import {
   MainStackNavigator,
-  PlanningStackNavigator,
-  InsightStackNavigator,
+  BookingStackNavigator,
+  FavoriteStackNavigator,
   MessageStackNavigator,
 } from "./StackNavigator";
 import Colors from "../constants/Colors";
@@ -23,16 +23,16 @@ export default function BottomTabNavigator() {
 
           if (route.name === "HomeScreen") {
             iconName = "home-variant-outline";
-            circleColor = focused ? "#DAB88B" : "";
-          } else if (route.name === "PlanningScreen") {
-            iconName = "calendar-month-outline";
-            circleColor = focused ? "#DAB88B" : "";
-          } else if (route.name === "InsightScreen") {
-            iconName = "chart-bell-curve-cumulative";
-            circleColor = focused ? "#DAB88B" : "";
+            circleColor = focused ? Colors.light.button : "";
+          } else if (route.name === "BookingScreen") {
+            iconName = "bag-personal-outline";
+            circleColor = focused ? Colors.light.button : "";
+          } else if (route.name === "FavoriteScreen") {
+            iconName = "cards-heart-outline";
+            circleColor = focused ? Colors.light.button : "";
           } else if (route.name === "MessagesScreen") {
             iconName = "message-outline";
-            circleColor = focused ? "#DAB88B" : "";
+            circleColor = focused ? Colors.light.button : "";
           }
 
           return (
@@ -75,13 +75,13 @@ export default function BottomTabNavigator() {
       />
 
       <Tab.Screen
-        name="PlanningScreen"
-        component={PlanningStackNavigator}
+        name="BookingScreen"
+        component={BookingStackNavigator}
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name="InsightScreen"
-        component={InsightStackNavigator}
+        name="FavoriteScreen"
+        component={FavoriteStackNavigator}
         options={{ headerShown: false }}
       />
       <Tab.Screen
