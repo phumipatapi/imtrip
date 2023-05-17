@@ -128,7 +128,17 @@ export default function ActivityInfoScreen(props: Props) {
             />
           </TouchableOpacity>
         </View>
-        <FavoriteButton backgroundColor={Colors.light.background} iconColor={Colors.light.grey} iconSize={25} touchableSize={40} />
+        <FavoriteButton backgroundColor={Colors.light.background} iconColor={Colors.light.grey} iconSize={25} touchableSize={40} activityId={
+          activityData[0]._id
+        } activityName={
+          activityData[0].activity_name
+        } activityDistrict={
+          activityData[0].district
+        } activityPrice={
+          activityData[0].activity_price
+        } activityRating={
+          4.23
+        } />
 
       </View>
       <ScrollView>
@@ -215,8 +225,7 @@ export default function ActivityInfoScreen(props: Props) {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 100,
-        marginBottom: 30,
+
         backgroundColor: Colors.light.tabBar,
       }}
     >

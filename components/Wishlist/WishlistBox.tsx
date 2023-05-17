@@ -24,7 +24,18 @@ import FavoriteButton from "../others/FavoriteButton";
 //     onPress: () => void;
 // }
 
-const WishlistBox = () => {
+interface Props {
+    navigation: any;
+    activityId: string;
+    route: any;
+    activityName: string;
+    activityDistrict: string;
+    activityPrice: number;
+    activityRating: number;
+    onPress: () => void;
+}
+
+const WishlistBox = (props: Props) => {
     return (
         <TouchableOpacity
             style={{
@@ -39,6 +50,7 @@ const WishlistBox = () => {
                 paddingVertical: 20,
 
             }}
+            onPress={props.onPress}
 
         >
             <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -54,7 +66,9 @@ const WishlistBox = () => {
                             fontSize: 20,
                             color: Colors.light.button,
                         }}>
-                        ชื่อกิจกรรม
+                        {
+                            props.activityName
+                        }
                     </Text>
                     <Text
                         style={{
@@ -62,7 +76,9 @@ const WishlistBox = () => {
                             fontSize: 16,
                             color: Colors.light.darkGrey,
                         }}>
-                        จังหวัด ประจวบคีรีขันธ์
+                        จังหวัด {
+                            props.activityDistrict
+                        }
                     </Text>
                     <View
                         style={{
@@ -77,7 +93,9 @@ const WishlistBox = () => {
                                 fontSize: 16,
                             }}
                         >
-                            ฿ 500
+                            ฿ {
+                                props.activityPrice
+                            }
                         </Text>
                         <Text
                             style={{
@@ -104,13 +122,25 @@ const WishlistBox = () => {
                                 fontSize: 16,
                             }}
                         >
-                            4.00
+                            {
+                                props.activityRating
+                            }
                         </Text>
                     </View>
                 </View>
                 <FavoriteButton
                     styles={{ position: 'relative', left: 50, top: -10 }}
-                    backgroundColor={Colors.light.tabBar} iconColor={Colors.light.red} iconSize={25} touchableSize={40} />
+                    backgroundColor={Colors.light.tabBar} iconColor={Colors.light.red} iconSize={25} touchableSize={40} activityId={
+                        props.activityId
+                    } activityName={
+                        props.activityName
+                    } activityDistrict={
+                        props.activityDistrict
+                    } activityPrice={
+                        props.activityPrice
+                    } activityRating={
+                        props.activityRating
+                    } />
 
             </View>
         </TouchableOpacity>

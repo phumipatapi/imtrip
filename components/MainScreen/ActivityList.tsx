@@ -32,29 +32,13 @@ interface ActivityData {
 
 interface ActivityListProps {
   navigation: any;
+  activityData: ActivityData[];
 }
 
-const ActivityList = ({ navigation }: ActivityListProps) => {
-  const [activityData, setActivityData] = useState<ActivityData[]>([]);
+const ActivityList = ({ navigation, activityData }: ActivityListProps) => {
+
   const isFocused = useIsFocused();
 
-  useEffect(() => {
-    async function fetchActivityData() {
-      try {
-        const response = await fetch(
-          "https://clumsy-bat-handbag.cyclic.app/activity/get/all"
-        );
-        const data = await response.json();
-        if (data.payload.data.length > 0) {
-          setActivityData(data.payload.data);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    fetchActivityData();
-  }, []);
 
   const activityBoxes =
     activityData?.length > 0 ? (
@@ -70,10 +54,9 @@ const ActivityList = ({ navigation }: ActivityListProps) => {
             booking={0}
             rating={0}
             allbooking={0}
-            onPress={() =>
-              navigation.push("ActivityInfo", { activityId: activity._id })
-            }
-          />
+            onPress={() => navigation.push("ActivityInfo", { activityId: activity._id })} id={
+              activity._id
+            } />
         ) : null
       )
     ) : (
@@ -86,37 +69,16 @@ const ActivityList = ({ navigation }: ActivityListProps) => {
           marginBottom: 30,
         }}
       >
-        {activityData?.length === 0 ? (
-          <>
-            <Image
-              source={require("../../assets/noData.jpg")}
-              style={{
-                width: 200,
-                height: 200,
-              }}
-            />
-            <Text
-              style={{
-                fontFamily: "Mitr_400Regular",
-                color: Colors.light.black,
-                fontSize: 20,
-                alignSelf: "center",
-                textAlign: "center",
-              }}
-            >
-              คุณยังไม่ได้สร้างกิจกรรม{"\n"}ลองสร้างกิจกรรมกันเถอะ!
-            </Text>
-          </>
-        ) : (
-          <Lottie
-            source={require("../../assets/animatedIcon/loading.json")}
-            autoPlay
-            loop
-            style={{
-              width: 200,
-            }}
-          />
-        )}
+
+        <Lottie
+          source={require("../../assets/animatedIcon/loading.json")}
+          autoPlay
+          loop
+          style={{
+            width: 200,
+          }}
+        />
+
       </View>
     );
 

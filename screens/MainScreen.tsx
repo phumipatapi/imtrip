@@ -7,7 +7,8 @@ import {
   Platform,
   StatusBar,
   Dimensions,
-  TextInput
+  RefreshControl,
+  TextInput,
 } from "react-native";
 import Colors from "../constants/Colors";
 import ActivityBox from "../components/MainScreen/ActivityBox";
@@ -25,9 +26,43 @@ interface Props {
   navigation: any;
 }
 
+interface ActivityData {
+  _id: string;
+  activity_detail: string;
+  activity_image: string[];
+  activity_name: string;
+  activity_price: number;
+  activity_time: number;
+  activity_type: string[];
+  address: string;
+  address_detail: string;
+  created: string;
+  district: string;
+  facility_food: string[];
+  facility_other: string[];
+  facility_travel: string[];
+  is_use_to_activity: boolean;
+  latitude: number;
+  longtitude: number;
+  participation_limit: number;
+  status: string;
+  updated_at: string;
+}
+
 export default function MainScreen(props: Props) {
+  const [refreshing, setRefreshing] = React.useState(false);
   const [userName, setUserName] = React.useState("");
   const [userImage, setUserImage] = React.useState("");
+  const [activityData, setActivityData] = React.useState<ActivityData[]>([]);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchActivityData();
+
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const getProfile = async () => {
     try {
@@ -42,9 +77,22 @@ export default function MainScreen(props: Props) {
     }
   };
 
+  const fetchActivityData = async () => {
+    try {
+      const response = await fetch(
+        "https://clumsy-bat-handbag.cyclic.app/activity/get/all"
+      );
+      const data = await response.json();
+      if (data.payload.data.length > 0) {
+        setActivityData(data.payload.data);
+      }
+    } catch (error) { }
+  };
+
   React.useEffect(() => {
     getProfile();
-  });
+    fetchActivityData();
+  }, []);
 
   return (
     <View
@@ -54,7 +102,12 @@ export default function MainScreen(props: Props) {
         backgroundColor: Colors.light.tabBar,
       }}
     >
-      <ScrollView style={{ backgroundColor: Colors.light.background }}>
+      <ScrollView
+        style={{ backgroundColor: Colors.light.background }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View
           style={{
             flex: 1,
@@ -136,11 +189,16 @@ export default function MainScreen(props: Props) {
               onPressIn={() => props.navigation.navigate("Search")}
             />
           </View>
-          <HorizontalActivityList navigation={props.navigation} />
-          <ActivityList navigation={props.navigation} />
+          <HorizontalActivityList
+            navigation={props.navigation}
+            activityData={activityData}
+          />
+          <ActivityList
+            navigation={props.navigation}
+            activityData={activityData}
+          />
         </View>
       </ScrollView>
-
     </View>
   );
 }

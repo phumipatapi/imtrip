@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Image,ScrollView, Alert } from "react-native";
+import { Text, View, Image, ScrollView, Alert } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import ActivityBox, { ActivityBoxProps } from "./ActivityBox";
 import Lottie from "lottie-react-native";
@@ -35,10 +35,11 @@ interface ActivityData {
 
 interface ActivityListProps {
   navigation: any;
+  activityData: ActivityData[];
 }
 
-const HorizontalActivityList = ({ navigation }: ActivityListProps) => {
-  const [activityData, setActivityData] = useState<ActivityData[]>([]);
+const HorizontalActivityList = ({ navigation, activityData }: ActivityListProps) => {
+  // const [activityData, setActivityData] = useState<ActivityData[]>([]);
   const isFocused = useIsFocused();
   const [location, setLocation] = useState({
     latitude: 0,
@@ -49,68 +50,55 @@ const HorizontalActivityList = ({ navigation }: ActivityListProps) => {
   const [errorMsg, setErrorMsg] = useState();
 
   useEffect(() => {
-    async function fetchActivityData() {
-      try {
-        const response = await fetch(
-          "https://clumsy-bat-handbag.cyclic.app/activity/get/all"
-        );
-        const data = await response.json();
-        if (data.payload.data.length > 0) {
-          setActivityData(data.payload.data);
-        }
-      } catch (error) {
-       
-      }
-    }
 
     (async () => {
-        const { status } = await Location.requestForegroundPermissionsAsync();
-  
-        if (status !== "granted") {
-          Alert.alert(
-            "Insufficient permissions!",
-            "Sorry, we need location permissions to make this work!",
-            [{ text: "Okay" }]
-          );
-          return;
-        }
-        let location = await Location.getCurrentPositionAsync({});
-  
-        setLocation({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.02,
-        });
-        // searchByLatLon(location.coords.latitude, location.coords.longitude);
-      })();
-    fetchActivityData();
+      const { status } = await Location.requestForegroundPermissionsAsync();
+
+      if (status !== "granted") {
+        Alert.alert(
+          "Insufficient permissions!",
+          "Sorry, we need location permissions to make this work!",
+          [{ text: "Okay" }]
+        );
+        return;
+      }
+      let location = await Location.getCurrentPositionAsync({});
+
+      setLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.02,
+      });
+      // searchByLatLon(location.coords.latitude, location.coords.longitude);
+    })();
+
   }, []);
 
   const calculateDistance = (activity: ActivityData) => {
     const distance = getDistance(
       { latitude: activity.latitude, longitude: activity.longtitude },
-      { latitude: location.latitude!, longitude: location.longitude!}
+      { latitude: location.latitude!, longitude: location.longitude! }
     );
 
     return distance;
   };
 
   const sortedActivityData =
-  activityData?.length > 0
-    ? [...activityData].sort(
+    activityData?.length > 0
+      ? [...activityData].sort(
         (a, b) => calculateDistance(a) - calculateDistance(b)
       )
-    : [];
+      : [];
 
- 
+
   const activityBoxes =
-  sortedActivityData?.length > 0 ? (
-        <ScrollView horizontal style={{paddingLeft: 5}} showsHorizontalScrollIndicator={false} >
+    sortedActivityData?.length > 0 ? (
+      <ScrollView horizontal style={{ paddingLeft: 5 }} showsHorizontalScrollIndicator={false} >
         {sortedActivityData.map((activity) =>
           activity._id ? (
             <HorizontalActivityBox
-             district={activity?.district}
+              district={activity?.district}
               key={activity._id}
               price={activity?.activity_price}
               activityName={activity?.activity_name}
@@ -119,10 +107,9 @@ const HorizontalActivityList = ({ navigation }: ActivityListProps) => {
               booking={0}
               rating={0}
               allbooking={0}
-              onPress={() =>
-                navigation.push("ActivityInfo", { activityId: activity._id })
-              }
-            />
+              onPress={() => navigation.push("ActivityInfo", { activityId: activity._id })} id={
+                activity._id
+              } />
           ) : null
         )}
       </ScrollView>
@@ -136,53 +123,32 @@ const HorizontalActivityList = ({ navigation }: ActivityListProps) => {
           marginBottom: 30,
         }}
       >
-        {activityData?.length === 0 ? (
-          <>
-            <Image
-              source={require("../../assets/noData.jpg")}
-              style={{
-                width: 200,
-                height: 200,
-              }}
-            />
-            <Text
-              style={{
-                fontFamily: "Mitr_400Regular",
-                color: Colors.light.black,
-                fontSize: 20,
-                alignSelf: "center",
-                textAlign: "center",
-              }}
-            >
-              คุณยังไม่ได้สร้างกิจกรรม{"\n"}ลองสร้างกิจกรรมกันเถอะ!
-            </Text>
-          </>
-        ) : (
-          <Lottie
-            source={require("../../assets/animatedIcon/loading.json")}
-            autoPlay
-            loop
-            style={{
-              width: 200,
-            }}
-          />
-        )}
+
+        <Lottie
+          source={require("../../assets/animatedIcon/loading.json")}
+          autoPlay
+          loop
+          style={{
+            width: 200,
+          }}
+        />
+
       </View>
     );
 
   return <View style={{
     marginTop: 20
   }}>
-    <Text  style={{
-                fontFamily: "Mitr_400Regular",
-                color: Colors.light.black,
-                fontSize: 22,
-               marginBottom: 20
-              }}>
-        กิจกรรมใกล้เคียง
+    <Text style={{
+      fontFamily: "Mitr_400Regular",
+      color: Colors.light.black,
+      fontSize: 22,
+      marginBottom: 20
+    }}>
+      กิจกรรมใกล้เคียง
     </Text>
     {activityBoxes}
-    </View>;
+  </View>;
 };
 
 export default HorizontalActivityList;

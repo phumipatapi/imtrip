@@ -18,9 +18,10 @@ export interface ActivityBoxProps {
   allbooking: number;
   activityName: string;
   activityImage: string[];
-  price : number;
+  price: number;
   district: string;
-  
+  id: string;
+
   onPress: () => void;
 }
 
@@ -38,7 +39,7 @@ const ActivityBox = (props: ActivityBoxProps) => {
         shadowRadius: 3.84,
 
         elevation: 5,
-       
+
         backgroundColor: Colors.light.black,
         borderRadius: 20,
         marginBottom: 30
@@ -55,8 +56,18 @@ const ActivityBox = (props: ActivityBoxProps) => {
           opacity: 0.9,
         }}
       />
-      <FavoriteButton backgroundColor={"rgba(0,0,0,0.6)"} iconColor={Colors.light.background} iconSize={24} touchableSize={30}/>
-    
+      <FavoriteButton backgroundColor={"rgba(0,0,0,0.6)"} iconColor={Colors.light.background} iconSize={24} touchableSize={30} activityId={
+        props.id
+      } activityName={
+        props.activityName
+      } activityDistrict={
+        props.district
+      } activityPrice={
+        props.price
+      } activityRating={
+        props.rating
+      } />
+
 
       <View
         style={{
@@ -68,7 +79,7 @@ const ActivityBox = (props: ActivityBoxProps) => {
           padding: 15
         }}
       >
-    
+
         <Text
           style={{
             fontFamily: "Mitr_600SemiBold",
@@ -86,54 +97,52 @@ const ActivityBox = (props: ActivityBoxProps) => {
             fontSize: 16,
           }}
         >
-         {props.district}
-        </Text> 
+          {props.district}
+        </Text>
         <View
-        style={{
-        flexDirection: 'row',
-        alignItems: 'center'
-        }}
-      >
-        <Text
           style={{
-            fontFamily: "Mitr_400Regular",
-            color: Colors.light.darkGrey,
-            fontSize: 16,
+            flexDirection: 'row',
+            alignItems: 'center'
           }}
         >
-          ฿ {props.price}
-        </Text>
-        <Text
-          style={{
-            marginLeft: 5,
-            marginRight: 5,
-            fontFamily: "Mitr_400Regular",
-            color: Colors.light.grey,
-            fontSize: 16,
-          }}
-        >
-          |
-        </Text>
-        <MaterialCommunityIcons
-                  name="star"
-                  size={20}
-                  color={Colors.light.yellow}
-                />
-                <Text
-          style={{
-            marginLeft: 5,
-           
-            fontFamily: "Mitr_400Regular",
-            color: Colors.light.darkGrey,
-            fontSize: 16,
-          }}
-        >
-         {props.rating}
-        </Text>
+          <Text
+            style={{
+              fontFamily: "Mitr_400Regular",
+              color: Colors.light.darkGrey,
+              fontSize: 16,
+            }}
+          >
+            ฿ {props.price}
+          </Text>
+          <Text
+            style={{
+              marginLeft: 5,
+              marginRight: 5,
+              fontFamily: "Mitr_400Regular",
+              color: Colors.light.grey,
+              fontSize: 16,
+            }}
+          >
+            |
+          </Text>
+          <MaterialCommunityIcons
+            name="star"
+            size={20}
+            color={Colors.light.yellow}
+          />
+          <Text
+            style={{
+              marginLeft: 5,
+
+              fontFamily: "Mitr_400Regular",
+              color: Colors.light.darkGrey,
+              fontSize: 16,
+            }}
+          >
+            {props.rating}
+          </Text>
         </View>
       </View>
-      
-     
     </TouchableOpacity>
   );
 };

@@ -24,7 +24,19 @@ import FavoriteButton from "../others/FavoriteButton";
 //     onPress: () => void;
 // }
 
-const MyBookingBox = () => {
+interface Props {
+    navigation: any;
+    // activityId: string;
+    route: any;
+    activityName: string;
+    activityDistrict: string;
+    date: string;
+    onPress: () => void;
+}
+
+const MyBookingBox = (
+    props: Props
+) => {
     return (
         <TouchableOpacity
             style={{
@@ -39,6 +51,7 @@ const MyBookingBox = () => {
                 paddingVertical: 20,
 
             }}
+            onPress={props.onPress}
 
         >
             <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -54,7 +67,7 @@ const MyBookingBox = () => {
                             fontSize: 20,
                             color: Colors.light.button,
                         }}>
-                        ชื่อกิจกรรม
+                        {props.activityName}
                     </Text>
                     <Text
                         style={{
@@ -62,7 +75,7 @@ const MyBookingBox = () => {
                             fontSize: 16,
                             color: Colors.light.darkGrey,
                         }}>
-                        จังหวัด ประจวบคีรีขันธ์
+                        จังหวัด {props.activityDistrict}
                     </Text>
 
                     <Text
@@ -71,7 +84,21 @@ const MyBookingBox = () => {
                             fontSize: 16,
                             color: Colors.light.darkGrey,
                         }}>
-                        20 มกราคม 2564, 10:00 น.
+
+                        {
+                            // props.date
+                            new Date(props.date).toLocaleDateString('th-TH', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                            })
+                        } {
+                            new Date(props.date).toLocaleTimeString('th-TH', {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                            })
+
+                        } น.
                     </Text>
                 </View>
 

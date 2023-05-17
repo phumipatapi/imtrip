@@ -20,7 +20,7 @@ export interface ActivityBoxProps {
   activityImage: string[];
   district: string;
   price: number;
-  
+  id: string;
   onPress: () => void;
 }
 
@@ -36,9 +36,9 @@ const HorizontalActivityBox = (props: ActivityBoxProps) => {
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        width : 180,
+        width: 180,
         elevation: 5,
-        
+
         backgroundColor: Colors.light.black,
         borderRadius: 20,
         marginRight: 20,
@@ -57,27 +57,18 @@ const HorizontalActivityBox = (props: ActivityBoxProps) => {
           resizeMode: 'cover'
         }}
       />
-      <FavoriteButton backgroundColor={"rgba(0,0,0,0.6)"} iconColor={Colors.light.background} iconSize={24} touchableSize={30}/>
-      {/* <View
-        style={{
-          position: "absolute",
-          top: 40,
-          left: 20,
-          right: 0,
-          bottom: 0,
-          justifyContent: "center",
-        }}
-      >
-        <Text
-          style={{
-            fontFamily: "Mitr_400Regular",
-            color: Colors.light.background,
-            fontSize: 24,
-          }}
-        >
-          {props.activityName}
-        </Text>
-      </View> */}
+      <FavoriteButton backgroundColor={"rgba(0,0,0,0.6)"} iconColor={Colors.light.background} iconSize={24} touchableSize={30} activityId={
+        props.id
+      } activityName={
+        props.activityName
+      } activityDistrict={
+        props.district
+      } activityPrice={
+        props.price
+      } activityRating={
+        props.rating
+      } />
+
 
       <View
         style={{
@@ -89,7 +80,7 @@ const HorizontalActivityBox = (props: ActivityBoxProps) => {
           padding: 10
         }}
       >
-    <Text
+        <Text
           style={{
             fontFamily: "Mitr_600SemiBold",
             color: Colors.light.black,
@@ -98,7 +89,7 @@ const HorizontalActivityBox = (props: ActivityBoxProps) => {
           }}
         >
           {props.activityName}
-        </Text> 
+        </Text>
         <Text
           style={{
             fontFamily: "Mitr_400Regular",
@@ -106,50 +97,50 @@ const HorizontalActivityBox = (props: ActivityBoxProps) => {
             fontSize: 14,
           }}
         >
-         {props.district}
-        </Text> 
+          {props.district}
+        </Text>
         <View
-        style={{
-        flexDirection: 'row',
-        alignItems: 'center'
-        }}
-      >
-        <Text
           style={{
-            fontFamily: "Mitr_400Regular",
-            color: Colors.light.darkGrey,
-            fontSize: 14,
+            flexDirection: 'row',
+            alignItems: 'center'
           }}
         >
-          ฿ {props.price}
-        </Text>
-        <Text
-          style={{
-            marginLeft: 5,
-            marginRight: 5,
-            fontFamily: "Mitr_400Regular",
-            color: Colors.light.grey,
-            fontSize: 14,
-          }}
-        >
-          |
-        </Text>
-        <MaterialCommunityIcons
-                  name="star"
-                  size={20}
-                  color={Colors.light.yellow}
-                />
-                <Text
-          style={{
-            marginLeft: 5,
-           
-            fontFamily: "Mitr_400Regular",
-            color: Colors.light.darkGrey,
-            fontSize: 14,
-          }}
-        >
-         {props.rating}
-        </Text>
+          <Text
+            style={{
+              fontFamily: "Mitr_400Regular",
+              color: Colors.light.darkGrey,
+              fontSize: 14,
+            }}
+          >
+            ฿ {props.price}
+          </Text>
+          <Text
+            style={{
+              marginLeft: 5,
+              marginRight: 5,
+              fontFamily: "Mitr_400Regular",
+              color: Colors.light.grey,
+              fontSize: 14,
+            }}
+          >
+            |
+          </Text>
+          <MaterialCommunityIcons
+            name="star"
+            size={20}
+            color={Colors.light.yellow}
+          />
+          <Text
+            style={{
+              marginLeft: 5,
+
+              fontFamily: "Mitr_400Regular",
+              color: Colors.light.darkGrey,
+              fontSize: 14,
+            }}
+          >
+            {props.rating}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
