@@ -141,7 +141,7 @@ export default function CreateActivityScreen8(prop: Props) {
         return;
       }
       let formData = new FormData();
-      console.log(uri);
+
       formData.append('image', {
         uri: uri,
         type: 'image/jpeg',
