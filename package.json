@@ -1,5 +1,5 @@
 {
-  "name": "imtrip",
+  "name": "imtrip_for_tourism",
   "version": "1.0.0",
   "scripts": {
     "start": "expo start --dev-client",

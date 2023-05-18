@@ -49,6 +49,7 @@ export default function ActivityInfoScreen(props: Props) {
 
   React.useEffect(() => {
     async function fetchActivityData() {
+      console.log(activityId);
       try {
         const response = await fetch(
           "https://clumsy-bat-handbag.cyclic.app/activity/get_by_id/" +
@@ -57,7 +58,7 @@ export default function ActivityInfoScreen(props: Props) {
         const data = await response.json();
 
         setActivityData(data.payload.data);
-
+        console.log(activityData[0].activity_image)
       } catch (error) {
         console.error(error);
       }
@@ -82,14 +83,26 @@ export default function ActivityInfoScreen(props: Props) {
           backgroundColor: Colors.light.black,
         }}
       >
-        <Image
-          source={require("../../assets/activityImg1.jpeg")}
-          style={{
-            width: "100%",
-            height: "100%",
 
-            opacity: 0.5,
-          }}
+        <FlatList
+          data={activityData?.[0]?.activity_image!}
+          renderItem={({ item }) => (
+            <Image
+
+              source={{ uri: item }}
+              style={{
+                width: "100%",
+                height: "100%",
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                opacity: 0.9,
+              }}
+            />
+          )}
+          keyExtractor={(item) => item}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          pagingEnabled={true}
         />
         <View
           style={{

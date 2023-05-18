@@ -47,7 +47,11 @@ const ActivityBox = (props: ActivityBoxProps) => {
       onPress={props.onPress}
     >
       <Image
-        source={require("../../assets/activityImg1.jpeg")}
+        source={
+          props.activityImage.length > 0
+            ? { uri: props.activityImage[0] }
+            : require("../../assets/activityImg1.jpeg")
+        }
         style={{
           width: "100%",
           height: "65%",
