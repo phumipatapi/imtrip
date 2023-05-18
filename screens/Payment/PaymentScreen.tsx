@@ -108,21 +108,25 @@ export default function PaymentScreen(props: Props) {
                     >
                         จองวันที่
                     </Text>
-                    <RNDateTimePicker
-                        minuteInterval={30}
-                        value={date}
-                        mode="datetime"
-                        style={{}}
-                        display="default"
-                        minimumDate={tomorrow}
-                        onChange={(event, selectedDate) => {
-                            const currentDate = selectedDate || date;
-                            setDate(currentDate);
-                        }}
-                    // minimumDate={
-                    //     new Date()
-                    // }
-                    />
+                    {
+
+                        <RNDateTimePicker
+                            minuteInterval={30}
+                            value={date}
+                            mode="datetime"
+                            style={{}}
+
+                            display="default"
+                            minimumDate={tomorrow}
+                            onChange={(event, selectedDate) => {
+                                const currentDate = selectedDate || date;
+                                setDate(currentDate);
+                            }}
+                        // minimumDate={
+                        //     new Date()
+                        // }
+                        />}
+
                 </View>
                 <View
                     style={{

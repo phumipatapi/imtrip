@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Text, View, FlatList, TouchableOpacity, Image, ScrollView } from "react-native";
+import { Text, View, FlatList, TouchableOpacity, Image, ScrollView, Dimensions } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import ChatBox from "../../components/Messages/chatBox";
 import LottieWithText from "../../components/others/LottieWithText";
@@ -58,15 +58,16 @@ export default function ActivityInfoScreen(props: Props) {
         const data = await response.json();
 
         setActivityData(data.payload.data);
-        console.log(activityData[0].activity_image)
+
       } catch (error) {
         console.error(error);
       }
     }
-    if (isFocused) {
-      fetchActivityData();
-    }
-  }, [isFocused, props]);
+
+    fetchActivityData();
+
+  }, [props]);
+
   return activityData && activityData.length > 0 ? (
     <View
       style={{
@@ -83,34 +84,34 @@ export default function ActivityInfoScreen(props: Props) {
           backgroundColor: Colors.light.black,
         }}
       >
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled style={{
 
-        <FlatList
-          data={activityData?.[0]?.activity_image!}
-          renderItem={({ item }) => (
-            <Image
+        }}>
+          {
+            activityData[0].activity_image.map((image, index) => {
+              return (
+                <Image
 
-              source={{ uri: item }}
-              style={{
-                width: "100%",
-                height: "100%",
-                borderTopLeftRadius: 15,
-                borderTopRightRadius: 15,
-                opacity: 0.9,
-              }}
-            />
-          )}
-          keyExtractor={(item) => item}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled={true}
-        />
+                  key={index}
+                  source={{ uri: image }}
+                  style={{
+                    width: Dimensions.get('window').width,
+                    height: "100%",
+                    resizeMode: "cover",
+                  }}
+                />
+              )
+            })
+          }
+        </ScrollView>
+
         <View
           style={{
             position: "absolute",
             top: 10,
             left: 10,
             width: "100%",
-            height: "100%",
+
 
           }}
         >
