@@ -7,7 +7,15 @@ import MainInsightScreen from "../../screens/MainInsightScreen";
 
 const Tab = createMaterialTopTabNavigator();
 
-const ActivityInfoTab = () => {
+interface Props {
+  navigation: any;
+  route: any;
+  bookingData: any;
+  activityId: string;
+  activityStatus: string;
+}
+
+const ActivityInfoTab = (props: Props) => {
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -16,6 +24,9 @@ const ActivityInfoTab = () => {
         options={{
           tabBarLabelStyle: { fontSize: 18, fontFamily: "Mitr_400Regular" },
           tabBarIndicatorStyle: { backgroundColor: Colors.light.button },
+        }}
+        initialParams={{
+          bookingData: props.bookingData,
         }}
       />
       <Tab.Screen
@@ -29,9 +40,14 @@ const ActivityInfoTab = () => {
       <Tab.Screen
         name="จัดการ"
         component={ManageScreen}
+
         options={{
           tabBarLabelStyle: { fontSize: 18, fontFamily: "Mitr_400Regular" },
           tabBarIndicatorStyle: { backgroundColor: Colors.light.button },
+        }}
+        initialParams={{
+          activityId: props.activityId,
+          activityStatus: props.activityStatus,
         }}
       />
     </Tab.Navigator>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Text, View, FlatList, TouchableOpacity, Image } from "react-native";
+import { Text, View, FlatList, TouchableOpacity, Image, RefreshControl, ScrollView, Dimensions } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import ChatBox from "../../components/Messages/chatBox";
 import LottieWithText from "../../components/others/LottieWithText";
@@ -38,188 +38,252 @@ interface ActivityData {
 
 export default function ActivityInfoScreen(props: Props) {
   const [activityData, setActivityData] = React.useState<ActivityData[]>([]);
+  const [bookingData, setBookingData] = React.useState<any[]>([]);
   const isFocused = useIsFocused();
   const { activityId } = props.route.params;
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const fetchActivityData = async () => {
+    try {
+      const response = await fetch(
+        "https://clumsy-bat-handbag.cyclic.app/activity/get_by_id/" +
+        activityId
+      );
+      const data = await response.json();
+
+      setActivityData(data.payload.data);
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const fetchBooking = async () => {
+    console.log();
+    try {
+      const response = await fetch(
+        "https://clumsy-bat-handbag.cyclic.app/booking/get_by_activity_id/" +
+        activityId
+      );
+      const data = await response.json();
+      setBookingData(data.payload.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchActivityData();
+    fetchBooking();
+    setRefreshing(
+      false
+    );
+  }, []);
 
   React.useEffect(() => {
-    async function fetchActivityData() {
-      try {
-        const response = await fetch(
-          "https://clumsy-bat-handbag.cyclic.app/activity/get_by_id/" +
-            activityId
-        );
-        const data = await response.json();
-        console.log(data.payload.data);
-        setActivityData(data.payload.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    if (isFocused) {
-      fetchActivityData();
-    }
-  }, [isFocused, props]);
-  return activityData && activityData.length > 0 ? (
-    <View
-      style={{
-        flex: 1,
 
-        backgroundColor: Colors.light.tabBar,
-      }}
-    >
+
+    fetchActivityData();
+    fetchBooking();
+
+  }, [isFocused, props]);
+  return (<ScrollView refreshControl={
+    <RefreshControl
+      refreshing={refreshing}
+      onRefresh={onRefresh}
+
+    />
+  } contentContainerStyle={{
+    flexGrow: 1,
+    backgroundColor: Colors.light.tabBar,
+  }}>
+
+    {activityData && activityData.length > 0 ? (
+
+
       <View
         style={{
-          height: 240,
+          flex: 1,
 
-          backgroundColor: Colors.light.black,
+          backgroundColor: Colors.light.tabBar,
         }}
       >
-        <Image
-          source={require("../../assets/activityImg1.jpeg")}
+        <View
           style={{
-            width: "100%",
-            height: "70%",
+            height: Dimensions.get('window').height * 0.4,
 
-            opacity: 0.5,
-          }}
-        />
-        <View
-          style={{
-            position: "absolute",
-            top: 40,
-            left: 20,
-            right: 0,
-            bottom: 0,
-            justifyContent: "center",
+            backgroundColor: Colors.light.black,
           }}
         >
-          <Text
+          {/* <Image
+            source={require("../../assets/activityImg1.jpeg")}
             style={{
-              fontFamily: "Mitr_400Regular",
-              color: Colors.light.background,
-              fontSize: 30,
+              width: "100%",
+              height: "70%",
+
+              opacity: 0.5,
             }}
-          >
-            {activityData[0].activity_name}
-          </Text>
-        </View>
-        <View
-          style={{
-            backgroundColor: Colors.light.background,
-            height: "30%",
-            justifyContent: "center",
-          }}
-        >
+          /> */}
+          <ScrollView horizontal pagingEnabled style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height * 0.4, opacity: 0.6 }}>
+            {activityData[0]?.activity_image?.map((item, index) => (
+              <Image
+                key={index}
+                source={{ uri: item }}
+                style={{ width: Dimensions.get('window').width, height: '100%', resizeMode: 'cover' }}
+              />
+            ))}
+          </ScrollView>
+
           <View
             style={{
-              flexDirection: "row",
-              paddingHorizontal: 20,
-              justifyContent: "space-between",
+              position: "absolute",
+              top: 40,
+              left: 20,
+              right: 0,
+              bottom: 0,
+              justifyContent: "center",
             }}
           >
-            <View style={{ flexDirection: "column" }}>
-              <Text
-                style={{
-                  fontFamily: "Kanit_700Bold",
-                  color: Colors.light.black,
-                  fontSize: 20,
-                }}
-              >
-                0
-              </Text>
-              <Text
-                style={{
-                  fontFamily: "Mitr_400Regular",
-                  color: Colors.light.grey,
-                  fontSize: RFPercentage(2),
-                }}
-              >
-                ผู้เข้าดู
-              </Text>
-            </View>
-            <View style={{ flexDirection: "column" }}>
-              <Text
-                style={{
-                  fontFamily: "Kanit_700Bold",
-                  color: Colors.light.black,
-                  fontSize: 20,
-                }}
-              >
-                0
-              </Text>
-              <Text
-                style={{
-                  fontFamily: "Mitr_400Regular",
-                  color: Colors.light.grey,
-                  fontSize: RFPercentage(2),
-                }}
-              >
-                ดำเนินการจอง
-              </Text>
-            </View>
-            <View style={{ flexDirection: "column" }}>
-              <Text
-                style={{
-                  fontFamily: "Kanit_700Bold",
-                  color: Colors.light.black,
-                  fontSize: 20,
-                }}
-              >
-                0
-              </Text>
-              <Text
-                style={{
-                  fontFamily: "Mitr_400Regular",
-                  color: Colors.light.grey,
-                  fontSize: RFPercentage(2),
-                }}
-              >
-                เรทติ้ง
-              </Text>
-            </View>
-            <View style={{ flexDirection: "column" }}>
-              <Text
-                style={{
-                  fontFamily: "Kanit_700Bold",
-                  color: Colors.light.black,
-                  fontSize: 20,
-                }}
-              >
-                0
-              </Text>
-              <Text
-                style={{
-                  fontFamily: "Mitr_400Regular",
-                  color: Colors.light.grey,
-                  fontSize: RFPercentage(2),
-                }}
-              >
-                จองทั้งหมด
-              </Text>
+            <Text
+              style={{
+                fontFamily: "Mitr_400Regular",
+                color: Colors.light.background,
+                fontSize: 30,
+              }}
+            >
+              {activityData[0].activity_name}
+            </Text>
+          </View>
+          <View
+            style={{
+              backgroundColor: Colors.light.background,
+              height: "30%",
+              justifyContent: "center",
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                paddingHorizontal: 20,
+                justifyContent: "space-between",
+              }}
+            >
+              <View style={{ flexDirection: "column" }}>
+                <Text
+                  style={{
+                    fontFamily: "Kanit_700Bold",
+                    color: Colors.light.black,
+                    fontSize: 20,
+                  }}
+                >
+                  0
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: "Mitr_400Regular",
+                    color: Colors.light.grey,
+                    fontSize: RFPercentage(2),
+                  }}
+                >
+                  ผู้เข้าดู
+                </Text>
+              </View>
+              <View style={{ flexDirection: "column" }}>
+                <Text
+                  style={{
+                    fontFamily: "Kanit_700Bold",
+                    color: Colors.light.black,
+                    fontSize: 20,
+                  }}
+                >
+                  {
+                    bookingData.filter((item) => item.booking_status === "pending").length
+                  }
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: "Mitr_400Regular",
+                    color: Colors.light.grey,
+                    fontSize: RFPercentage(2),
+                  }}
+                >
+                  ดำเนินการจอง
+                </Text>
+              </View>
+              <View style={{ flexDirection: "column" }}>
+                <Text
+                  style={{
+                    fontFamily: "Kanit_700Bold",
+                    color: Colors.light.black,
+                    fontSize: 20,
+                  }}
+                >
+                  0
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: "Mitr_400Regular",
+                    color: Colors.light.grey,
+                    fontSize: RFPercentage(2),
+                  }}
+                >
+                  เรทติ้ง
+                </Text>
+              </View>
+              <View style={{ flexDirection: "column" }}>
+                <Text
+                  style={{
+                    fontFamily: "Kanit_700Bold",
+                    color: Colors.light.black,
+                    fontSize: 20,
+                  }}
+                >
+                  {
+                    bookingData.length
+                  }
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: "Mitr_400Regular",
+                    color: Colors.light.grey,
+                    fontSize: RFPercentage(2),
+                  }}
+                >
+                  จองทั้งหมด
+                </Text>
+              </View>
             </View>
           </View>
         </View>
+        <ActivityInfoTab navigation={undefined} route={undefined} bookingData={
+          bookingData
+        } activityId={
+          activityId
+        } activityStatus={
+          activityData[0]?.status
+        }
+        />
+
       </View>
-      <ActivityInfoTab />
-    </View>
-  ) : (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 100,
-        marginBottom: 30,
-      }}
-    >
-      <Lottie
-        source={require("../../assets/animatedIcon/loading.json")}
-        autoPlay
-        loop
+    ) : (
+      <View
         style={{
-          width: 200,
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 100,
+          marginBottom: 30,
         }}
-      />
-    </View>
+      >
+        <Lottie
+          source={require("../../assets/animatedIcon/loading.json")}
+          autoPlay
+          loop
+          style={{
+            width: 200,
+          }}
+        />
+      </View>)}</ScrollView >
   );
 }

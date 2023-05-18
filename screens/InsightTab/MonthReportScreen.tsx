@@ -21,7 +21,32 @@ interface Props {
 }
 
 export default function MonthReportScreen(prop: Props) {
-  const { month, year } = prop.route.params;
+
+
+  const { date, bookingData } = prop.route.params;
+
+  function calculateGrowth(previousBookings: number, currentBookings: number) {
+    // Check if previous bookings are zero
+    if (previousBookings === 0) {
+      if (currentBookings === 0) {
+        return 0; // No growth when both periods have zero bookings
+      } else {
+        return (
+          100 * currentBookings
+        ); // Treat as infinite growth when previous bookings are zero
+      }
+    }
+
+    // Calculate the difference in bookings
+    const growthDifference = currentBookings - previousBookings;
+
+    // Calculate the growth rate
+    const growthRate = (growthDifference / previousBookings) * 100;
+
+    return growthRate;
+  }
+
+
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
       <View
@@ -81,7 +106,12 @@ export default function MonthReportScreen(prop: Props) {
             fontFamily: "Mitr_400Regular",
           }}
         >
-          ข้อมูลเดือน {month} {year}
+          ข้อมูลเดือน {
+            new Date(date).toLocaleString(
+              'default',
+              { month: 'long', year: 'numeric' }
+            )
+          }
         </Text>
         <View
           style={{
@@ -115,7 +145,12 @@ export default function MonthReportScreen(prop: Props) {
               color: Colors.light.darkGrey,
             }}
           >
-            ข้อมูลเชิงลึกส่วนนี้มาจากข้อมูลของเดือน{month} {year} เท่านั้น
+            ข้อมูลเชิงลึกส่วนนี้มาจากข้อมูลของเดือน{
+              new Date(date).toLocaleString(
+                'default',
+                { month: 'long', year: 'numeric' }
+              )
+            } เท่านั้น
             หากต้องการดูข้อมูลเปรียบเทียบ โปรดกลับไปที่ข้อมูลเชิงลึกรายปี
           </Text>
           <View
@@ -144,7 +179,17 @@ export default function MonthReportScreen(prop: Props) {
                   fontFamily: "Mitr_400Regular",
                   color: Colors.light.button,
                 }}
-              >{` 20 การจอง`}</Text>
+              > {
+                  bookingData.filter(
+                    (booking: any) =>
+                      new Date(booking.booking_datetime).getMonth() ===
+                      new Date(date).getMonth() &&
+                      new Date(booking.booking_datetime).getFullYear() ===
+                      new Date(date).getFullYear()
+
+                  ).length
+
+                }</Text>
             </View>
             <View style={{ flexDirection: "row" }}>
               <Text
@@ -162,7 +207,29 @@ export default function MonthReportScreen(prop: Props) {
                   fontFamily: "Mitr_400Regular",
                   color: Colors.light.button,
                 }}
-              >{` เพิ่มขึ้น 3.67%`}</Text>
+              > {
+                  calculateGrowth(
+                    bookingData.filter(
+                      (booking: any) =>
+
+                        new Date(booking.booking_datetime).getMonth() ===
+                        new Date(date).getMonth() - 1 &&
+                        new Date(booking.booking_datetime).getFullYear() ===
+                        new Date(date).getFullYear()
+                    ).length,
+                    bookingData.filter(
+                      (booking: any) =>
+
+                        new Date(booking.booking_datetime).getMonth() ===
+                        new Date(date).getMonth() &&
+                        new Date(booking.booking_datetime).getFullYear() ===
+                        new Date(date).getFullYear()
+                    ).length
+                  ).toFixed(2)
+
+
+
+                }%</Text>
             </View>
             <View
               style={{
@@ -197,7 +264,18 @@ export default function MonthReportScreen(prop: Props) {
                   color: Colors.light.button,
                 }}
               >
-                กิจกรรมห่มทราย
+                {
+                  bookingData.filter(
+                    (booking: any) =>
+
+                      new Date(booking.booking_datetime).getMonth() ===
+                      new Date(date).getMonth() &&
+                      new Date(booking.booking_datetime).getFullYear() ===
+                      new Date(date).getFullYear()
+
+                  ).sort((a: any, b: any) => b.booking_total_price - a.booking_total_price)[0].activity_name
+
+                }
               </Text>
             </View>
             <View

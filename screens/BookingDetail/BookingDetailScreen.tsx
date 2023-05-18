@@ -1,13 +1,100 @@
 import * as React from "react";
-import { Text, View, FlatList, TouchableOpacity, Image } from "react-native";
+import { Text, View, FlatList, TouchableOpacity, Image, ActivityIndicator } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import ChatBox from "../../components/Messages/chatBox";
 import LottieWithText from "../../components/others/LottieWithText";
 import Colors from "../../constants/Colors";
 import ActivityInfoTab from "../../components/ActivityInfo/Tabbar";
 import { ScrollView } from "react-native-gesture-handler";
+import axios from "axios";
+import { set } from "firebase/database";
 
-export default function BookingDetailScreen() {
+interface Props {
+  navigation: any;
+  route: any;
+}
+interface ActivityData {
+  _id: string;
+  activity_detail: string;
+  activity_image: string[];
+  activity_name: string;
+  activity_price: number;
+  activity_time: number;
+  activity_type: string[];
+  address: string;
+  address_detail: string;
+  created: string;
+  district: string;
+  facility_food: string[];
+  facility_other: string[];
+  facility_travel: string[];
+  is_use_to_activity: boolean;
+  latitude: number;
+  longtitude: number;
+  participation_limit: number;
+  status: string;
+  updated_at: string;
+}
+
+export default function BookingDetailScreen(
+  props: Props
+) {
+  const [activityData, setActivityData] = React.useState<ActivityData[]>([]);
+  const { bookingData, activityId } = props.route.params;
+  const [isLoading, setIsLoading] = React.useState(false);
+  const fetchActivityData = async () => {
+    try {
+      const response = await fetch(
+        "https://clumsy-bat-handbag.cyclic.app/activity/get_by_id/" +
+        activityId
+      );
+      const data = await response.json();
+      setActivityData(data.payload.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  React.useEffect(() => {
+    fetchActivityData();
+  }, []);
+
+  const handleConfirm = async (bookingId: string) => {
+    setIsLoading(true);
+    await axios(`https://clumsy-bat-handbag.cyclic.app/booking/update_status/${bookingId}`, {
+      method: "POST",
+      data: {
+        booking_status: "booked",
+      },
+    })
+      .then((response) => response)
+      .then((data) => {
+
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  const handleCancel = async (bookingId: string) => {
+    setIsLoading(true);
+    await axios(`https://clumsy-bat-handbag.cyclic.app/booking/update_status/${bookingId}`, {
+      method: "POST",
+      data: {
+        booking_status: "cancel",
+      },
+    })
+      .then((response) => response)
+      .then((data) => {
+        setIsLoading(false);
+
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   return (
     <ScrollView>
       <View
@@ -41,7 +128,9 @@ export default function BookingDetailScreen() {
               color: Colors.light.button,
             }}
           >
-            12345678
+            {"ITM-" +
+              bookingData._id.substring(bookingData._id.length - 5).toUpperCase()
+            }
           </Text>
         </View>
         <View
@@ -70,7 +159,9 @@ export default function BookingDetailScreen() {
             marginTop: 20,
           }}
         >
-          มาสานตะกร้ากันเถอะ
+          {
+            bookingData.activity_name
+          }
         </Text>
         <Text
           style={{
@@ -80,7 +171,9 @@ export default function BookingDetailScreen() {
             marginTop: 10,
           }}
         >
-          18 มีนาคม 2564 17:30
+          {
+            activityData[0]?.activity_detail
+          }
         </Text>
         <View
           style={{
@@ -115,7 +208,9 @@ export default function BookingDetailScreen() {
                 marginLeft: 20,
               }}
             >
-              ธนพล สุขสวัสดิ์
+              {
+                bookingData.booking_user_name
+              }
             </Text>
           </View>
           <View
@@ -140,7 +235,9 @@ export default function BookingDetailScreen() {
                 marginLeft: 20,
               }}
             >
-              0812345678
+              {
+                bookingData.booking_user_phone
+              }
             </Text>
           </View>
           <View
@@ -165,7 +262,7 @@ export default function BookingDetailScreen() {
                 marginLeft: 20,
               }}
             >
-              10 คน
+              {bookingData.booking_amount} คน
             </Text>
           </View>
         </View>
@@ -190,7 +287,13 @@ export default function BookingDetailScreen() {
                 marginTop: 10,
               }}
             >
-              18 มีนาคม 2564
+              {
+                new Date(bookingData.booking_datetime).toLocaleDateString("th-TH", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              }
             </Text>
           </View>
           <View style={{ flexDirection: "column", marginLeft: 50 }}>
@@ -212,10 +315,49 @@ export default function BookingDetailScreen() {
                 marginTop: 10,
               }}
             >
-              17:30
+              {
+                new Date(bookingData.booking_datetime).toLocaleTimeString("th-TH", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+
+              } น.
             </Text>
           </View>
         </View>
+        {
+          bookingData.booking_status === "pending" &&
+          <TouchableOpacity
+            style={{
+              height: 50,
+              backgroundColor: Colors.light.button,
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 20,
+              marginTop: 40,
+              elevation: 3,
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.22,
+              shadowRadius: 2.22,
+            }}
+            onPress={
+              () => handleConfirm(bookingData._id)
+            }
+          >
+            <Text
+              style={{
+                fontFamily: "Mitr_400Regular",
+                fontSize: 18,
+                color: Colors.light.background,
+              }}
+            >
+              ยืนยันการจอง
+            </Text>
+          </TouchableOpacity>}
         <TouchableOpacity
           style={{
             height: 50,
@@ -223,7 +365,7 @@ export default function BookingDetailScreen() {
             justifyContent: "center",
             alignItems: "center",
             borderRadius: 20,
-            marginTop: 40,
+            marginTop: 20,
             elevation: 3,
             shadowColor: "#000",
             shadowOffset: {
@@ -233,6 +375,7 @@ export default function BookingDetailScreen() {
             shadowOpacity: 0.22,
             shadowRadius: 2.22,
           }}
+
         >
           <Text
             style={{
@@ -244,6 +387,44 @@ export default function BookingDetailScreen() {
             คุยกับผู้จอง
           </Text>
         </TouchableOpacity>
+        {
+          bookingData.booking_status === "pending" &&
+          <TouchableOpacity
+            style={{
+
+
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 20,
+              marginTop: 20,
+              elevation: 3,
+              // shadowColor: "#000",
+              // shadowOffset: {
+              //   width: 0,
+              //   height: 2,
+              // },
+              // shadowOpacity: 0.22,
+              // shadowRadius: 2.22,
+            }}
+            onPress={
+              () => handleCancel(bookingData._id)
+            }
+          >
+            <Text
+              style={{
+                fontFamily: "Mitr_400Regular",
+                fontSize: 18,
+                color: Colors.light.red,
+              }}
+            >
+              ยกเลิกการจอง
+            </Text>
+          </TouchableOpacity>}
+        {isLoading && (
+          <View style={{ marginTop: 10 }}>
+            <ActivityIndicator size="small" color="blue" />
+          </View>
+        )}
       </View></ScrollView>
   );
 }

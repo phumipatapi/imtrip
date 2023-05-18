@@ -7,6 +7,9 @@ interface Props {
   time: string;
   lastestMessage: string;
   onPress: () => void;
+  people: number;
+  image: string;
+  status: string;
 }
 
 const BookingBox = (props: Props) => {
@@ -23,7 +26,9 @@ const BookingBox = (props: Props) => {
         }}
       >
         <Image
-          source={require("../../assets/icon.png")}
+          source={
+            props.image === "" || props.image === null || props.image === undefined ? require("../../assets/displayImage.png") : { uri: props.image }
+          }
           style={{
             height: 52,
             width: 52,
@@ -54,10 +59,12 @@ const BookingBox = (props: Props) => {
               style={{
                 fontFamily: "Mitr_400Regular",
                 fontSize: 12,
-                color: "green",
+                color: props.status === "pending" ? Colors.light.darkGrey : Colors.light.button,
               }}
             >
-              ชำระเงินแล้ว
+              {
+                props.status === "pending" ? "รอการยืนยัน" : "ยืนยันแล้ว"
+              }
             </Text>
           </View>
           <Text
@@ -68,7 +75,7 @@ const BookingBox = (props: Props) => {
               width: "100%",
             }}
           >
-            จำนวนผู้เข้าร่วม: 2 คน
+            จำนวนผู้เข้าร่วม: {props.people} คน
           </Text>
           <Text
             style={{
@@ -78,7 +85,20 @@ const BookingBox = (props: Props) => {
               width: "100%",
             }}
           >
-            วันที่จอง: 12 มีนาคม 2564 10:00 น.
+            {
+              new Date(props.time).toLocaleDateString("th-TH", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+
+            } {
+
+              new Date(props.time).toLocaleTimeString("th-TH", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })
+            } น.
           </Text>
         </View>
       </View>

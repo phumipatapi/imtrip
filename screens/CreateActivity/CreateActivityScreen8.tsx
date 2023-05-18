@@ -22,7 +22,7 @@ interface Props {
 
 export default function CreateActivityScreen8(prop: Props) {
   const [accept, setAccept] = useState(false);
-
+  var imageUri: string[] = [];
   function clearDraftData() {
     activity[0].district = "";
     activity[0].activityType = [];
@@ -33,11 +33,41 @@ export default function CreateActivityScreen8(prop: Props) {
     activity[0].address = "";
     activity[0].latitude = 0;
     activity[0].longitude = 0;
-    activity[0].activityImage = [];
+    activity[0].activityImage = ["", "", "", "", "", ""];
     activity[0].limit = "";
     activity[0].price = "";
     activity[0].addressDetail = "";
   }
+
+
+  // async function uploadImage(image: string) {
+  //   if (!image) {
+  //     console.log('Empty image URI');
+  //     return; // Exit the function if image URI is empty
+  //   }
+
+  //   let formData = new FormData();
+  //   console.log(image);
+  //   formData.append('image', {
+  //     uri: image,
+  //     type: 'image/jpeg',
+  //     name: 'image.jpg',
+  //   });
+
+  //   fetch('https://clumsy-bat-handbag.cyclic.app/upload', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'multipart/form-data',
+  //     },
+  //     body: formData,
+  //   })
+  //     .then((response) => response.json())
+  //     .then((result) => {
+  //       console.log('Success:', result);
+  //       setImageUri(result['imageUrl']);
+  //       return result;
+  //     });
+  // }
 
   async function fetchActivity() {
     await axios("https://clumsy-bat-handbag.cyclic.app/activity/insert", {
@@ -52,7 +82,7 @@ export default function CreateActivityScreen8(prop: Props) {
         address: activity[0].address,
         latitude: activity[0].latitude,
         longtitude: activity[0].longitude,
-        activity_image: activity[0].activityImage,
+        activity_image: imageUri,
         participation_limit: parseInt(activity[0].limit),
         activity_price: parseInt(activity[0].price),
         status: "pending",
@@ -62,9 +92,11 @@ export default function CreateActivityScreen8(prop: Props) {
     })
       .then((response) => response)
       .then((data) => {
-        console.log(data);
+        console.log("success");
+
       })
       .catch((error) => {
+        console.log("error");
         console.error(error);
       });
   }
@@ -85,6 +117,60 @@ export default function CreateActivityScreen8(prop: Props) {
       key: "3",
     },
   ];
+
+
+  async function uploadActivityImages() {
+    // try {
+    //   const imagePromises = activity[0].activityImage.map(async (uri) => {
+    //     if (!uri) {
+    //       console.log('Invalid URI:', uri);
+    //       return;
+    //     }
+    //     await uploadImage(uri);
+    //   })
+
+
+
+
+    // } catch (error) {
+    //   console.error('Error uploading images:', error);
+    // }
+    return Promise.all(activity[0].activityImage.map(async (uri) => {
+      if (!uri) {
+        console.log('Invalid URI:', uri);
+        return;
+      }
+      let formData = new FormData();
+      console.log(uri);
+      formData.append('image', {
+        uri: uri,
+        type: 'image/jpeg',
+        name: 'image.jpg',
+      });
+
+      await fetch('https://clumsy-bat-handbag.cyclic.app/upload', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          console.log('Success:', result);
+          imageUri.push(result['imageUrl']);
+          return result;
+        }
+        );
+
+    })).then(() => {
+      fetchActivity();
+      clearDraftData();
+      prop.navigation.push("Home");
+    }
+    )
+
+  };
 
   const scrollX = React.useRef(new Animated.Value(0)).current;
   const renderItem = ({ item }: { item: any }) => {
@@ -220,9 +306,13 @@ export default function CreateActivityScreen8(prop: Props) {
         <TouchableOpacity
           disabled={accept == false ? true : false}
           onPress={() => {
-            fetchActivity();
-            clearDraftData();
-            prop.navigation.push("Home");
+            uploadActivityImages();
+            // uploadImage(
+            //   activity[0].activityImage[0]
+            // )
+            // fetchActivity();
+            // clearDraftData();
+            // prop.navigation.push("Home");
           }}
           style={{
             backgroundColor:

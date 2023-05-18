@@ -23,16 +23,16 @@ export default function BottomTabNavigator() {
 
           if (route.name === "HomeScreen") {
             iconName = "home-variant-outline";
-            circleColor = focused ? "#DAB88B" : "";
+            circleColor = focused ? Colors.light.button : "";
           } else if (route.name === "PlanningScreen") {
             iconName = "calendar-month-outline";
-            circleColor = focused ? "#DAB88B" : "";
+            circleColor = focused ? Colors.light.button : "";
           } else if (route.name === "InsightScreen") {
             iconName = "chart-bell-curve-cumulative";
-            circleColor = focused ? "#DAB88B" : "";
+            circleColor = focused ? Colors.light.button : "";
           } else if (route.name === "MessagesScreen") {
             iconName = "message-outline";
-            circleColor = focused ? "#DAB88B" : "";
+            circleColor = focused ? Colors.light.button : "";
           }
 
           return (

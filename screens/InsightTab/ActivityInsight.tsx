@@ -4,8 +4,37 @@ import DropDownPicker from "react-native-dropdown-picker";
 import Colors from "../../constants/Colors";
 import { DonutChart } from "react-native-circular-chart";
 import { ScrollView } from "react-native-gesture-handler";
+import { authen } from "../../firebase_config";
 
-const ActivityInsight: React.FC = ({}) => {
+const ActivityInsight: React.FC = ({ }) => {
+  const [bookingData, setBookingData] = React.useState([]);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchBooking();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
+  const fetchBooking = async () => {
+    try {
+      const response = await fetch(
+        "https://clumsy-bat-handbag.cyclic.app/booking/get_by_created_id/" +
+        authen.currentUser?.uid
+      );
+      const data = await response.json();
+      setBookingData(data.payload.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchBooking();
+  }, []);
+
   const [open, setOpen] = React.useState(false);
 
   const options = [

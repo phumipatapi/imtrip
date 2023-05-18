@@ -27,6 +27,7 @@ interface ActivityData {
   longtitude: number;
   participation_limit: number;
   status: string;
+  activity_rating: number;
   updated_at: string;
 }
 
@@ -36,6 +37,7 @@ interface ActivityListProps {
 
 const ActivityList = ({ navigation }: ActivityListProps) => {
   const [activityData, setActivityData] = useState<ActivityData[]>([]);
+  const [bookingData, setBookingData] = useState<any[]>([]);
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -43,7 +45,7 @@ const ActivityList = ({ navigation }: ActivityListProps) => {
       try {
         const response = await fetch(
           "https://clumsy-bat-handbag.cyclic.app/activity/get_by_user_id/" +
-            authen.currentUser?.uid
+          authen.currentUser?.uid
         );
         const data = await response.json();
         if (data.payload.data.length > 0) {
@@ -54,9 +56,23 @@ const ActivityList = ({ navigation }: ActivityListProps) => {
       }
     }
 
+    async function fetchBooking() {
+      try {
+        const response = await fetch(
+          `https://clumsy-bat-handbag.cyclic.app/booking/get_by_created_id/${authen.currentUser?.uid}`
+        );
+        const data = await response.json();
+        setBookingData(data.payload.data);
+      } catch (error) {
+        console.error(error);
+
+      }
+    }
+
     fetchActivityData();
+    fetchBooking();
   }, []);
-  console.log(activityData != null ? activityData : "no data");
+
   const activityBoxes =
     activityData?.length > 0 ? (
       activityData.map((activity) =>
@@ -66,9 +82,22 @@ const ActivityList = ({ navigation }: ActivityListProps) => {
             activityName={activity?.activity_name}
             activityImage={activity?.activity_image}
             viewer={0}
-            booking={0}
-            rating={0}
-            allbooking={0}
+            booking={
+              bookingData.filter(
+                (booking) => booking.activity_id === activity._id
+              ).length
+
+            }
+            rating={
+              0
+
+            }
+            allbooking={
+              bookingData.filter(
+                (booking) => booking.activity_id === activity._id
+              ).length
+
+            }
             onPress={() =>
               navigation.push("ActivityInfo", { activityId: activity._id })
             }

@@ -9,77 +9,87 @@ interface InsightData {
   totalBookings: number;
 }
 
-const insights: InsightData[] = [
-  {
-    month: "มกราคม",
-    year: 2022,
-    income: 10000,
-    totalBookings: 20,
-  },
-  {
-    month: "กุมภาพันธ์",
-    year: 2022,
-    income: 15000,
-    totalBookings: 30,
-  },
-  {
-    month: "มีนาคม",
-    year: 2022,
-    income: 20000,
-    totalBookings: 40,
-  },
-  {
-    month: "เมษายน",
-    year: 2022,
-    income: 20000,
-    totalBookings: 40,
-  },
-];
-
 interface Props {
   navigation: any;
+  selectedType: string;
+  bookingData: any;
 }
 
 const BookingReport = (prop: Props) => {
   return (
     <View style={styles.container}>
-      {insights
-        .slice()
-        .reverse()
-        .map((insight) => (
-          <TouchableOpacity
-            style={styles.insight}
-            key={`${insight.month}-${insight.year}`}
-            onPress={() => {
-              prop.navigation.navigate("MonthReport", {
-                month: insight.month,
-                year: insight.year,
-              });
-            }}
-          >
-            <Text style={styles.month}>
-              {insight.month} {insight.year}
-            </Text>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.totalBookings}>{`ยอดจอง:`}</Text>
-              <Text
-                style={{
-                  ...styles.totalBookings,
-                  color: Colors.light.button,
-                }}
-              >{` ${insight.totalBookings}`}</Text>
-            </View>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.totalBookings}>{`รายได้รวม:`}</Text>
-              <Text
-                style={{
-                  ...styles.totalBookings,
-                  color: Colors.light.button,
-                }}
-              >{` ฿${insight.income}`}</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
+      {prop.bookingData &&
+        prop.bookingData
+          .slice()
+          .reverse()
+          .map((insight: any) => (
+            <TouchableOpacity
+              style={styles.insight}
+              key={`${insight.month}-${insight.year}`}
+              onPress={() => {
+                prop.navigation.navigate("MonthReport", {
+                  date: insight.booking_datetime,
+                  bookingData: prop.bookingData,
+
+
+                });
+              }}
+            >
+              <Text style={styles.month}>
+                {
+                  new Date(
+                    insight.booking_datetime
+                  ).toLocaleString("th-TH", {
+                    month: "long",
+                    year: "numeric",
+                  })
+
+                }
+              </Text>
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.totalBookings}>{`ยอดจอง:`}</Text>
+                <Text
+                  style={{
+                    ...styles.totalBookings,
+                    color: Colors.light.button,
+                  }}
+                >{` ${prop.bookingData.filter(
+                  (booking: any) =>
+                    new Date(booking.booking_datetime).getMonth() ===
+                    new Date(insight.booking_datetime).getMonth() &&
+                    new Date(booking.booking_datetime).getFullYear() ===
+
+                    new Date(insight.booking_datetime).getFullYear()
+                ).length
+
+                  }`}</Text>
+              </View>
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.totalBookings}>{`รายได้รวม:`}</Text>
+                <Text
+                  style={{
+                    ...styles.totalBookings,
+                    color: Colors.light.button,
+                  }}
+                >{` ฿${prop.bookingData
+                  .filter(
+                    (booking: any) =>
+
+                      new Date(booking.booking_datetime).getMonth() ===
+                      new Date(insight.booking_datetime).getMonth() &&
+                      new Date(booking.booking_datetime).getFullYear() ===
+                      new Date(insight.booking_datetime).getFullYear()
+                  )
+                  .reduce(
+                    (sum: number, booking: any) =>
+                      sum + booking.booking_total_price,
+                    0
+                  )}`}</Text>
+
+
+              </View>
+            </TouchableOpacity>
+          ))}
     </View>
   );
 };

@@ -33,6 +33,8 @@ const chat = [
 ];
 
 export default function BookingList(props: Props) {
+  const { bookingData } = props.route.params;
+
   return (
     <View
       style={{
@@ -51,16 +53,25 @@ export default function BookingList(props: Props) {
         }
       /> */}
       <FlatList
-        data={chat}
+        data={bookingData}
         renderItem={({ item }) => (
           <BookingBox
-            senderName={item.senderName}
-            time={item.time}
+            senderName={item.booking_user_name}
+            time={item.booking_datetime}
             lastestMessage={item.lastestMessage}
-            onPress={() => props.navigation.navigate("BookingDetail")}
-          />
+            image={item.booking_user_image}
+            status={item.booking_status}
+            onPress={() => props.navigation.navigate("BookingDetail",
+              {
+                bookingId: item._id,
+                activityId: item.activity_id,
+                bookingData: item,
+              }
+            )} people={
+              item.booking_amount
+            } />
         )}
-        keyExtractor={(chat) => chat.id}
+        keyExtractor={(booking) => booking._id}
       />
     </View>
   );

@@ -186,7 +186,7 @@ export default function CreateActivityScreen2(prop: Props) {
                 activity[0].activityName = activityName;
                 activity[0].activityDetail = activityDetail;
                 activity[0].time = time;
-                console.log(activity[0]);
+
                 prop.navigation.goBack()
               }}
             >
