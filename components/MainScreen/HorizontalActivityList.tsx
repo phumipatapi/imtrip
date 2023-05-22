@@ -9,6 +9,7 @@ import { useIsFocused } from "@react-navigation/native";
 import HorizontalActivityBox from "./HorizontalActivityBox";
 import { getDistance } from "geolib";
 import * as Location from 'expo-location';
+import axios from "axios";
 
 interface ActivityData {
   _id: string;
@@ -31,6 +32,7 @@ interface ActivityData {
   participation_limit: number;
   status: string;
   updated_at: string;
+  engagement: number;
 }
 
 interface ActivityListProps {
@@ -48,6 +50,27 @@ const HorizontalActivityList = ({ navigation, activityData }: ActivityListProps)
     longitudeDelta: 0.06,
   });
   const [errorMsg, setErrorMsg] = useState();
+
+  const updateEngagement = async (activityId: string, current_engagement: number) => {
+
+    await axios(`https://clumsy-bat-handbag.cyclic.app/activity/update/${activityId}`, {
+      method: "POST",
+      data: {
+
+        engagement: current_engagement + 1,
+
+
+      },
+    })
+      .then((response) => response)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+  }
 
   useEffect(() => {
 
@@ -96,7 +119,7 @@ const HorizontalActivityList = ({ navigation, activityData }: ActivityListProps)
     sortedActivityData?.length > 0 ? (
       <ScrollView horizontal style={{ paddingLeft: 5 }} showsHorizontalScrollIndicator={false} >
         {sortedActivityData.map((activity) =>
-          activity._id ? (
+          activity._id && activity.status !== "cancel" ? (
             <HorizontalActivityBox
               district={activity?.district}
               key={activity._id}
@@ -107,7 +130,10 @@ const HorizontalActivityList = ({ navigation, activityData }: ActivityListProps)
               booking={0}
               rating={0}
               allbooking={0}
-              onPress={() => navigation.push("ActivityInfo", { activityId: activity._id })} id={
+              onPress={() => {
+                updateEngagement(activity._id, activity?.engagement || 0)
+                navigation.push("ActivityInfo", { activityId: activity._id })
+              }} id={
                 activity._id
               } />
           ) : null

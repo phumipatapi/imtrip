@@ -40,6 +40,7 @@ interface ActivityData {
   participation_limit: number;
   status: string;
   updated_at: string;
+  user_id: string;
 }
 
 export default function ActivityInfoScreen(props: Props) {
@@ -49,15 +50,16 @@ export default function ActivityInfoScreen(props: Props) {
 
   React.useEffect(() => {
     async function fetchActivityData() {
-      console.log(activityId);
+
       try {
         const response = await fetch(
           "https://clumsy-bat-handbag.cyclic.app/activity/get_by_id/" +
           activityId
         );
         const data = await response.json();
-
-        setActivityData(data.payload.data);
+        if (data.payload && data.payload.data) {
+          setActivityData(data.payload.data);
+        }
 
       } catch (error) {
         console.error(error);
@@ -192,10 +194,19 @@ export default function ActivityInfoScreen(props: Props) {
                   <Image source={require('../../assets/clock.png')} style={{ height: 30, width: 30 }} />
                   <Text style={{ fontFamily: 'Mitr_400Regular', fontSize: 16, color: Colors.light.black, marginTop: 5 }}>{activityData[0].activity_time} ชั่วโมง</Text>
                 </View>
-                <View style={{ flexDirection: 'column', alignItems: 'center', marginRight: 10, backgroundColor: '#E8EEF3', width: 100, aspectRatio: 1, justifyContent: 'center', borderRadius: 20 }}>
+                <TouchableOpacity style={{
+                  flexDirection: 'column', alignItems: 'center', marginRight: 10, backgroundColor: '#E8EEF3',
+                  width: 100, aspectRatio: 1, justifyContent: 'center', borderRadius: 20
+                }}
+                  onPress={() => {
+                    props.navigation.navigate("Chat", {
+                      chat_user_id: activityData[0].user_id,
+                    });
+                  }}
+                >
                   <MaterialCommunityIcons name='message-text-outline' size={30} color={Colors.light.black} />
                   <Text style={{ fontFamily: 'Mitr_400Regular', fontSize: 16, color: Colors.light.black, marginTop: 5 }}>ข้อความ</Text>
-                </View>
+                </TouchableOpacity>
               </View>
             </ScrollView>
           </View>

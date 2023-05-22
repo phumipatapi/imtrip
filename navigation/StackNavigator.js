@@ -4,19 +4,13 @@ import MainScreen from "../screens/MainScreen";
 import MainWishlist from "../screens/MainWishlistScreen";
 import MainBookingScreen from "../screens/MainBookingScreen";
 import MainMessageScreen from "../screens/MainMessageScreen";
-import CreateActivityScreen from "../screens/CreateActivity/CreateActivityScreen";
-import CreateActivityScreen2 from "../screens/CreateActivity/CreateActivityScreen2";
+
 import SettingScreen from "../screens/SettingScreen";
 import { Button, TouchableOpacity, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Colors from "../constants/Colors";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
-import CreateActivityScreen3 from "../screens/CreateActivity/CreateActivityScreen3";
-import CreateActivityScreen4 from "../screens/CreateActivity/CreateActivityScreen4";
-import CreateActivityScreen5 from "../screens/CreateActivity/CreateActivityScreen5";
-import CreateActivityScreen6 from "../screens/CreateActivity/CreateActivityScreen6";
-import CreateActivityScreen7 from "../screens/CreateActivity/CreateActivityScreen7";
-import CreateActivityScreen8 from "../screens/CreateActivity/CreateActivityScreen8";
+
 import TermAndConditionScreen from "../screens/TermAndCondition";
 import ActivityInfoScreen from "../screens/ActivityInfo/ActivityInfoScreen";
 import BookingDetailScreen from "../screens/BookingDetail/BookingDetailScreen";
@@ -26,7 +20,7 @@ import SignUpScreen from "../screens/auth/SignUpScreen";
 import TermAndConditionsScreen from "../screens/TermAndCondition";
 import ChatScreen from "../screens/Chat/ChatScreen";
 import Chat from "../screens/Chat/ChatScreen";
-import MonthReportScreen from "../screens/InsightTab/MonthReportScreen";
+
 import AboutUsScreen from "../screens/AboutScreen";
 import SearchScreen from "../screens/SearchScreen";
 import PaymentScreen from "../screens/Payment/PaymentScreen";
@@ -72,7 +66,7 @@ const AuthStackNavigator = ({ navigation, route }) => {
 const MainStackNavigator = ({ navigation, route }) => {
 
   React.useLayoutEffect(() => {
-    const tabHiddenRoutes = ["SuccessPayment","CreateActivity", "CreateActivity2", "CreateActivity3", "CreateActivity4", "CreateActivity5", "CreateActivity6", "CreateActivity7", "CreateActivity8", "TermAndCondition", "ActivityInfo", "BookingDetail", "SignIn", "AboutUs", "Chat", "MonthReport","Payment"];
+    const tabHiddenRoutes = ["SuccessPayment", "TermAndCondition", "ActivityInfo", "BookingDetail", "SignIn", "AboutUs", "Chat", "MonthReport","Payment"];
     const routeName = getFocusedRouteNameFromRoute(route);
     if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
       navigation.setOptions({ tabBarStyle: { display: 'none' } });
@@ -80,23 +74,6 @@ const MainStackNavigator = ({ navigation, route }) => {
       navigation.setOptions({ tabBarStyle: { display: 'flex', height: 65, } });
     }
   }, [navigation, route]);
-
-  function clearDraftData() {
-    activity[0].district = "";
-    activity[0].activityType = [];
-    activity[0].useToActivity = "";
-    activity[0].activityName = "";
-    activity[0].time = 0;
-    activity[0].activityDetail = "";
-    activity[0].address = "";
-    activity[0].latitude = 0;
-    activity[0].longitude = 0;
-    activity[0].activityImage = [];
-    activity[0].limit = 0;
-    activity[0].price = 0;
-    activity[0].addressDetail = "";
-  }
-
   return (
     <Stack.Navigator>
 
@@ -111,292 +88,37 @@ const MainStackNavigator = ({ navigation, route }) => {
         options={{ headerShown: false }}
       />
       
-      <Stack.Screen
-        name="CreateActivity"
-        component={CreateActivityScreen}
-        options={({ navigation, route }) => ({
 
-          title: "",
-          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
-
-          headerLeft: (props) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  clearDraftData(),
-                    navigation.navigate("Home")
-                }}
-                style={{
-                  paddingLeft: 10,
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="chevron-left"
-                  size={40}
-                  color={Colors.light.grey}
-                />
-              </TouchableOpacity>
-            );
-          },
-        })}
-      />
-      <Stack.Screen
-        name="CreateActivity2"
-        component={CreateActivityScreen2}
-        options={({ navigation, route }) => ({
-
-          title: "",
-          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
-
-          headerLeft: (props) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  clearDraftData(),
-                    navigation.navigate("Home")
-                }}
-                style={{
-                  paddingLeft: 10,
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="chevron-left"
-                  size={40}
-                  color={Colors.light.grey}
-                />
-              </TouchableOpacity>
-            );
-          },
-
-        })}
-      />
-      <Stack.Screen
-        name="CreateActivity3"
-        component={CreateActivityScreen3}
-        options={({ navigation, route }) => ({
-
-          title: "",
-          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
-
-          headerLeft: (props) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  clearDraftData(),
-                    navigation.navigate("Home")
-                }}
-                style={{
-                  paddingLeft: 10,
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="chevron-left"
-                  size={40}
-                  color={Colors.light.grey}
-                />
-              </TouchableOpacity>
-            );
-          },
-        })}
-      />
-      <Stack.Screen
-        name="CreateActivity4"
-        component={CreateActivityScreen4}
-        options={({ navigation, route }) => ({
-
-          title: "",
-          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
-
-          headerLeft: (props) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  clearDraftData(),
-                    navigation.navigate("Home")
-                }}
-                style={{
-                  paddingLeft: 10,
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="chevron-left"
-                  size={40}
-                  color={Colors.light.grey}
-                />
-              </TouchableOpacity>
-            );
-          },
-        })}
-      />
-      <Stack.Screen
-        name="CreateActivity5"
-        component={CreateActivityScreen5}
-        options={({ navigation, route }) => ({
-
-          title: "",
-          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
-
-          headerLeft: (props) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  clearDraftData(),
-                    navigation.navigate("Home")
-                }}
-                style={{
-                  paddingLeft: 10,
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="chevron-left"
-                  size={40}
-                  color={Colors.light.grey}
-                />
-              </TouchableOpacity>
-            );
-          },
-        })}
-      />
-      <Stack.Screen
-        name="CreateActivity6"
-        component={CreateActivityScreen6}
-        options={({ navigation, route }) => ({
-
-          title: "",
-          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
-
-          headerLeft: (props) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  clearDraftData(),
-                    navigation.navigate("Home")
-                }}
-                style={{
-                  paddingLeft: 10,
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="chevron-left"
-                  size={40}
-                  color={Colors.light.grey}
-                />
-              </TouchableOpacity>
-            );
-          },
-        })}
-      />
-      <Stack.Screen
-        name="CreateActivity7"
-        component={CreateActivityScreen7}
-        options={({ navigation, route }) => ({
-
-          title: "",
-          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
-
-          headerLeft: (props) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  clearDraftData(),
-                    navigation.navigate("Home")
-                }}
-                style={{
-                  paddingLeft: 10,
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="chevron-left"
-                  size={40}
-                  color={Colors.light.grey}
-                />
-              </TouchableOpacity>
-            );
-          },
-        })}
-      />
-      <Stack.Screen
-        name="CreateActivity8"
-        component={CreateActivityScreen8}
-        options={({ navigation, route }) => ({
-
-          title: "",
-          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
-
-          headerLeft: (props) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  clearDraftData(),
-                    navigation.navigate("Home")
-                }}
-                style={{
-                  paddingLeft: 10,
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="chevron-left"
-                  size={40}
-                  color={Colors.light.grey}
-                />
-              </TouchableOpacity>
-            );
-          },
-        })}
-      />
       <Stack.Screen
         name="ActivityInfo"
         component={ActivityInfoScreen}
         options={{ headerShown: false }}
-        // options={({ navigation, route }) => ({
-        //   // headerStyle: { paddingBottom: 20 },
-        //   // title: "",
-        //   // headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
-        //   // headerLeft: (props) => {
-        //   //   return (
-        //   //     <TouchableOpacity
-        //   //       onPress={() => navigation.goBack()}
-        //   //       style={{
-        //   //         paddingLeft: 10,
-        //   //       }}
-        //   //     >
-        //   //       <MaterialCommunityIcons
-        //   //         name="chevron-left"
-        //   //         size={40}
-        //   //         color={Colors.light.grey}
-        //   //       />
-        //   //     </TouchableOpacity>
-        //   //   );
-        //   // },
-        //   // headerRight: (props) => {
-        //   //   return <View style={{ flexDirection: "row" }}>
-        //   //     <TouchableOpacity
-        //   //       onPress={() => navigation.goBack()}
-        //   //       style={{
-        //   //         paddingRight: 15,
-        //   //       }}
-        //   //     >
-        //   //       <MaterialCommunityIcons
-        //   //         name="eye"
-        //   //         size={30}
-        //   //         color={Colors.light.grey}
-        //   //       />
-        //   //     </TouchableOpacity>
-        //   //     <TouchableOpacity
-        //   //       onPress={() => navigation.goBack()}
-        //   //       style={{
-        //   //         paddingRight: 20,
-        //   //       }}
-        //   //     >
-        //   //       <MaterialCommunityIcons
-        //   //         name="square-edit-outline"
-        //   //         size={30}
-        //   //         color={Colors.light.grey}
-        //   //       />
-        //   //     </TouchableOpacity>
-        //   //   </View>
-        //   // }
-        // })}
+      
+      />
+      <Stack.Screen
+        name="Chat"
+        component={Chat}
+        options={({ navigation, route }) => ({
+          // headerStyle: { paddingBottom: 20 },
+          title: "แชท",
+          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
+          headerLeft: (props) => {
+            return (
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={{
+                  paddingLeft: 10,
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="chevron-left"
+                  size={40}
+                  color={Colors.light.grey}
+                />
+              </TouchableOpacity>
+            );
+          },
+        })}
       />
         <Stack.Screen
         name="Payment"
@@ -559,7 +281,19 @@ const MainStackNavigator = ({ navigation, route }) => {
     </Stack.Navigator>
   );
 };
-const BookingStackNavigator = () => {
+const BookingStackNavigator = ({
+  navigation,
+  route,
+}) => {
+  React.useLayoutEffect(() => {
+    const tabHiddenRoutes = [ "Chat"];
+    const routeName = getFocusedRouteNameFromRoute(route);
+    if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
+      navigation.setOptions({ tabBarStyle: { display: 'none' } });
+    } else {
+      navigation.setOptions({ tabBarStyle: { display: 'flex', height: 65, } });
+    }
+  }, [navigation, route]);
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -595,6 +329,14 @@ const BookingStackNavigator = () => {
 
         })}
       />
+       <Stack.Screen
+        name="Chat"
+        component={Chat}
+        options={{
+          headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
+        }}
+      />
+
     </Stack.Navigator>
   );
 };
@@ -609,19 +351,25 @@ const FavoriteStackNavigator = () => {
           headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
         }}
       />
-      <Stack.Screen
-        name="MonthReport"
-        component={MonthReportScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
+   
 
     </Stack.Navigator>
 
   );
 };
-const MessageStackNavigator = () => {
+const MessageStackNavigator = ({
+  navigation,
+  route,
+}) => {
+  React.useLayoutEffect(() => {
+    const tabHiddenRoutes = [ "Chat"];
+    const routeName = getFocusedRouteNameFromRoute(route);
+    if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
+      navigation.setOptions({ tabBarStyle: { display: 'none' } });
+    } else {
+      navigation.setOptions({ tabBarStyle: { display: 'flex', height: 65, } });
+    }
+  }, [navigation, route]);
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -634,9 +382,27 @@ const MessageStackNavigator = () => {
       <Stack.Screen
         name="Chat"
         component={Chat}
-        options={{
+        options={({ navigation, route }) => ({
+          // headerStyle: { paddingBottom: 20 },
+          title: "แชท",
           headerTitleStyle: { fontFamily: "Mitr_400Regular", fontSize: 20 },
-        }}
+          headerLeft: (props) => {
+            return (
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={{
+                  paddingLeft: 10,
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="chevron-left"
+                  size={40}
+                  color={Colors.light.grey}
+                />
+              </TouchableOpacity>
+            );
+          },
+        })}
       />
 
     </Stack.Navigator>

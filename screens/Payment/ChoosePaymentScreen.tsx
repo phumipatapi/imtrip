@@ -14,6 +14,8 @@ import DropDownPicker from "react-native-dropdown-picker";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import axios from "axios";
 import { authen } from "../../firebase_config";
+import { addDoc, collection, onSnapshot, query } from "firebase/firestore";
+import { db } from "../../firebase_config";
 interface Props {
     navigation: any;
 
@@ -24,6 +26,30 @@ interface Props {
 export default function ChoosePayment(props: Props) {
     const { activityData, date, people } = props.route.params;
     //   const [activityData, setActivityData] = React.useState<ActivityData[]>([]);
+
+    const [phoneNumber, setPhoneNumber] = useState("");
+
+    useEffect(() => {
+        // Fetch the user list from the Firestore "users" collection
+        const userRef = collection(db, "users");
+        const q = query(userRef);
+        const unsubscribe = onSnapshot(q, (snapshot) =>
+            snapshot.docs.map((doc) => {
+                if (doc.data().uid === authen.currentUser?.uid) {
+
+                    setPhoneNumber(doc.data().phone);
+
+                }
+            })
+        );
+
+        return () => {
+            unsubscribe();
+        };
+    }, [activityData, date, people])
+
+
+
 
     async function fetchBooking() {
         await axios("https://clumsy-bat-handbag.cyclic.app/booking/insert", {
@@ -37,6 +63,12 @@ export default function ChoosePayment(props: Props) {
                 booking_status: "pending",
                 activity_name: activityData.activity_name,
                 activity_district: activityData.district,
+                booking_user_name: authen.currentUser?.displayName,
+
+                booking_user_phone: phoneNumber,
+
+
+                created_user_id: activityData.user_id,
             },
         })
             .then((response) => response)

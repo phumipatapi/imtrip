@@ -32,6 +32,7 @@ export default function SignUpScreen(prop: Props) {
   const [birthday, setBirthday] = useState("");
   const [surname, setSurname] = useState("");
   const [hidePassword, setHidePassword] = useState(true);
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   async function signUp() {
     try {
@@ -52,6 +53,7 @@ export default function SignUpScreen(prop: Props) {
         surname: surname,
         birthday: birthday,
         email: email,
+        phoneNumber: phoneNumber,
       });
 
       console.log("User created successfully");
@@ -121,6 +123,20 @@ export default function SignUpScreen(prop: Props) {
         onChangeText={setBirthday}
         value={birthday}
         placeholder="วันเกิด"
+      />
+      <TextInput
+        style={{
+          borderColor: Colors.light.grey,
+          borderWidth: 1,
+          borderRadius: 10,
+          padding: 15,
+          marginTop: 10,
+          fontFamily: "Mitr_400Regular",
+          fontSize: 18,
+        }}
+        onChangeText={setPhoneNumber}
+        value={phoneNumber}
+        placeholder="เบอร์โทรศัพท์"
       />
       <Text
         style={{
@@ -198,14 +214,14 @@ export default function SignUpScreen(prop: Props) {
         {password.length == 0
           ? "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร 1 ตัวอักษรพิมพ์เล็ก 1 ตัวอักษร พิมพ์ใหญ่ 1 ตัวอักษรและตัวเลข"
           : password.length < 8
-          ? "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร"
-          : password.match(/[a-z]/g) == null
-          ? "รหัสผ่านต้องมีอย่างน้อย 1 ตัวอักษรพิมพ์เล็ก"
-          : password.match(/[A-Z]/g) == null
-          ? "รหัสผ่านต้องมีอย่างน้อย 1 ตัวอักษรพิมพ์ใหญ่"
-          : password.match(/[0-9]/g) == null
-          ? "รหัสผ่านต้องมีตัวเลขอย่างน้อย 1 ตัวอักษรตัวเลข"
-          : ""}
+            ? "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร"
+            : password.match(/[a-z]/g) == null
+              ? "รหัสผ่านต้องมีอย่างน้อย 1 ตัวอักษรพิมพ์เล็ก"
+              : password.match(/[A-Z]/g) == null
+                ? "รหัสผ่านต้องมีอย่างน้อย 1 ตัวอักษรพิมพ์ใหญ่"
+                : password.match(/[0-9]/g) == null
+                  ? "รหัสผ่านต้องมีตัวเลขอย่างน้อย 1 ตัวอักษรตัวเลข"
+                  : ""}
       </Text>
       <View
         style={{
@@ -258,13 +274,13 @@ export default function SignUpScreen(prop: Props) {
         style={{
           backgroundColor:
             email.length == 0 ||
-            password.length < 8 ||
-            password.match(/[a-z]/g) == null ||
-            password.match(/[A-Z]/g) == null ||
-            password.match(/[0-9]/g) == null ||
-            name.length == 0 ||
-            surname.length == 0 ||
-            birthday.length == 0
+              password.length < 8 ||
+              password.match(/[a-z]/g) == null ||
+              password.match(/[A-Z]/g) == null ||
+              password.match(/[0-9]/g) == null ||
+              name.length == 0 ||
+              surname.length == 0 ||
+              birthday.length == 0
               ? Colors.light.grey
               : Colors.light.button,
 

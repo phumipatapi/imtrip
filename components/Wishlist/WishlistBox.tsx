@@ -33,6 +33,7 @@ interface Props {
     activityPrice: number;
     activityRating: number;
     onPress: () => void;
+
 }
 
 const WishlistBox = (props: Props) => {
@@ -128,7 +129,7 @@ const WishlistBox = (props: Props) => {
                         </Text>
                     </View>
                 </View>
-                <FavoriteButton
+                {/* <FavoriteButton
                     styles={{ position: 'relative', left: 50, top: -10 }}
                     backgroundColor={Colors.light.tabBar} iconColor={Colors.light.red} iconSize={25} touchableSize={40} activityId={
                         props.activityId
@@ -140,7 +141,7 @@ const WishlistBox = (props: Props) => {
                         props.activityPrice
                     } activityRating={
                         props.activityRating
-                    } />
+                    } /> */}
 
             </View>
         </TouchableOpacity>

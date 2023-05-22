@@ -108,7 +108,7 @@ export default function SettingScreen(prop: Props) {
           >
             {authen.currentUser?.displayName}
           </Text>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{
               display: "flex",
 
@@ -130,10 +130,10 @@ export default function SettingScreen(prop: Props) {
               size={22}
               color={Colors.light.grey}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
-      <Text
+      {/* <Text
         style={{
           fontFamily: "Mitr_400Regular",
           fontSize: 18,
@@ -170,7 +170,7 @@ export default function SettingScreen(prop: Props) {
         >
           การแจ้งเตือน
         </Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <Text
         style={{
           fontFamily: "Mitr_400Regular",
@@ -179,7 +179,7 @@ export default function SettingScreen(prop: Props) {
           marginTop: 20
         }}
       >
-        อื่น ๆ
+        ข้อมูลเพิ่มเติม
       </Text>
       <View
         style={{
@@ -188,7 +188,7 @@ export default function SettingScreen(prop: Props) {
           borderBottomWidth: 1,
         }}
       />
-    
+
       <TouchableOpacity
         style={{
           marginTop: 20,

@@ -3,17 +3,22 @@ import { Image, Text, View, TouchableOpacity } from "react-native";
 import Colors from "../../constants/Colors";
 
 interface Props {
-  senderName: string;
+  chat_user: string;
+  chat_user_id: string;
   time: string;
   lastestMessage: string;
   navigation: any;
+  image: string;
 }
 
 const ChatBox = (props: Props) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        props.navigation.navigate("Chat");
+        props.navigation.navigate("Chat", {
+          chat_user: props.chat_user,
+          chat_user_id: props.chat_user_id,
+        });
       }}
       style={{}}
     >
@@ -28,7 +33,12 @@ const ChatBox = (props: Props) => {
         }}
       >
         <Image
-          source={require("../../assets/icon.png")}
+          source={
+            props.image
+              ? { uri: props.image }
+              : require("../../assets/displayImage.png")
+
+          }
           style={{
             height: 52,
             width: 52,
@@ -53,7 +63,7 @@ const ChatBox = (props: Props) => {
                 color: Colors.light.button,
               }}
             >
-              {props.senderName}
+              {props.chat_user}
             </Text>
             <Text
               style={{

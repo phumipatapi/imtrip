@@ -49,7 +49,8 @@ export default function SearchScreen(props: Props) {
         flex: 1,
         flexDirection: "column",
         backgroundColor: Colors.light.background,
-        marginHorizontal: 30,
+        paddingHorizontal: 20
+
       }}
     >
       <View
@@ -58,6 +59,7 @@ export default function SearchScreen(props: Props) {
           alignItems: "center",
           display: "flex",
           backgroundColor: Colors.light.background,
+
         }}
       >
         <TouchableOpacity
@@ -129,7 +131,7 @@ export default function SearchScreen(props: Props) {
                 district={item.district}
                 id={item._id}
                 onPress={() => {
-                  props.navigation.navigate("ActivityInfoScreen", {
+                  props.navigation.navigate("ActivityInfo", {
                     activityId: item._id,
                     activityName: item.activity_name,
                     activityDistrict: item.district,

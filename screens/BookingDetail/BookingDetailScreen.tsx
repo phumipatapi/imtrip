@@ -33,6 +33,7 @@ interface ActivityData {
   participation_limit: number;
   status: string;
   updated_at: string;
+  user_id: string;
 }
 
 export default function BookingDetailScreen(
@@ -323,6 +324,15 @@ export default function BookingDetailScreen(
             shadowOpacity: 0.22,
             shadowRadius: 2.22,
           }}
+
+          onPress={
+            () => {
+              props.navigation.navigate("Chat", {
+                // chat_user: activityData[0]?.user_name,
+                chat_user_id: activityData[0]?.user_id,
+              });
+            }
+          }
         >
           <Text
             style={{

@@ -21,7 +21,7 @@ export default function MainWishlist(props: Props) {
         `https://clumsy-bat-handbag.cyclic.app/favorite_activity/get_by_user_id/${id}`
       );
       const data = await response.json();
-      if (data.payload.data.length > 0) {
+      if (data.payload && data.payload.data) {
         setFavoriteActivity(data.payload.data);
 
 
@@ -67,23 +67,11 @@ export default function MainWishlist(props: Props) {
                 return (
                   <WishlistBox
                     key={item._id}
-                    navigation={undefined} activityId={
-                      item.activity_id
-                    } route={undefined} activityName={
-                      item.activity_name
-                    } activityDistrict={
-                      item.activity_district
-                    } activityPrice={
-                      item.activity_price
-                    } activityRating={
-                      item.activity_rating
-                    } onPress={
-                      () => {
-                        props.navigation.navigate("ActivityInfo", {
-                          activityId: item.activity_id,
-                        });
-                      }
-                    } />
+                    navigation={undefined} activityId={item.activity_id} route={undefined} activityName={item.activity_name} activityDistrict={item.activity_district} activityPrice={item.activity_price} activityRating={item.activity_rating} onPress={() => {
+                      props.navigation.navigate("ActivityInfo", {
+                        activityId: item.activity_id,
+                      });
+                    }} />
                 )
               })
             ) : (

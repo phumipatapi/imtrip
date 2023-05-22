@@ -23,7 +23,6 @@ import { authen } from "../../firebase_config";
 import firebase from "firebase/compat/app";
 import * as GoogleAuthentication from "expo-google-app-auth";
 import { GoogleAuthProvider } from "firebase/auth";
-
 interface Props {
   navigation: any;
   route: any;
@@ -35,6 +34,7 @@ export default function SignInScreen(prop: Props) {
   const [accessToken, setToken] = useState("");
   const [hidePassword, setHidePassword] = useState(true);
   const [showError, setShowError] = useState(false);
+
 
   async function signIn() {
     try {

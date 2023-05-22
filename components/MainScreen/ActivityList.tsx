@@ -6,6 +6,7 @@ import Lottie from "lottie-react-native";
 import { authen } from "../../firebase_config";
 import Colors from "../../constants/Colors";
 import { useIsFocused } from "@react-navigation/native";
+import axios from "axios";
 
 interface ActivityData {
   _id: string;
@@ -28,6 +29,7 @@ interface ActivityData {
   participation_limit: number;
   status: string;
   updated_at: string;
+  engagement: number;
 }
 
 interface ActivityListProps {
@@ -39,11 +41,31 @@ const ActivityList = ({ navigation, activityData }: ActivityListProps) => {
 
   const isFocused = useIsFocused();
 
+  const updateEngagement = async (activityId: string, current_engagement: number) => {
+
+    await axios(`https://clumsy-bat-handbag.cyclic.app/activity/update/${activityId}`, {
+      method: "POST",
+      data: {
+
+        engagement: current_engagement + 1,
+
+
+      },
+    })
+      .then((response) => response)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+  }
 
   const activityBoxes =
     activityData?.length > 0 ? (
       activityData.sort(() => Math.random() - 0.5).map((activity) =>
-        activity._id ? (
+        activity._id && activity.status !== "cancel" ? (
           <ActivityBox
             key={activity._id}
             price={activity?.activity_price}
@@ -54,7 +76,10 @@ const ActivityList = ({ navigation, activityData }: ActivityListProps) => {
             booking={0}
             rating={0}
             allbooking={0}
-            onPress={() => navigation.push("ActivityInfo", { activityId: activity._id })} id={
+            onPress={() => {
+              updateEngagement(activity._id, activity?.engagement || 0)
+              navigation.push("ActivityInfo", { activityId: activity._id })
+            }} id={
               activity._id
             } />
         ) : null

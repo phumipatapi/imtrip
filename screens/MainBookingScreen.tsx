@@ -22,7 +22,7 @@ export default function MainBookingScreen(props: Props) {
         `https://clumsy-bat-handbag.cyclic.app/booking/get_by_user_id/${userid}`
       );
       const data = await response.json();
-      if (data.payload.data.length > 0) {
+      if (data.payload && data.payload.data) {
         setBooking(data.payload.data);
       }
     } catch (error) {
@@ -64,27 +64,17 @@ export default function MainBookingScreen(props: Props) {
             booking.length > 0 ? (
               booking.map((item) => (
                 <MyBookingBox
-                  key={item._id} navigation={undefined} route={undefined} activityName={
-                    item.activity_name
-                  } activityDistrict={
-                    item.activity_district
-                  } date={
-                    item.booking_datetime
-                  }
-                  onPress={
-                    () => {
-                      props.navigation.navigate("BookingDetail", {
-                        activityId: item.activity_id,
-                        bookingId: item._id,
-                        activityName: item.activity_name,
-                        date: item.booking_datetime,
-                        status: item.booking_status,
-                        people: item.booking_amount
-                      })
-                    }
-
-                  }
-                />
+                  key={item._id} navigation={undefined} route={undefined} activityName={item.activity_name} activityDistrict={item.activity_district} date={item.booking_datetime}
+                  onPress={() => {
+                    props.navigation.navigate("BookingDetail", {
+                      activityId: item.activity_id,
+                      bookingId: item._id,
+                      activityName: item.activity_name,
+                      date: item.booking_datetime,
+                      status: item.booking_status,
+                      people: item.booking_amount
+                    });
+                  }} />
               ))
             ) : (
               <View
